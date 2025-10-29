@@ -1,1 +1,230 @@
-/* Aquí el contenido de tu archivo styles.css */
+
+body {
+  background-color: rgb(16, 25, 34);
+  color: white;
+  font-family: sans-serif;
+  margin: 20px;
+}
+
+main {
+  text-align: left;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  width: 100%;
+  height: 60px;
+  position: relative;
+  padding: 0 16px;
+}
+
+.esquina-derecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.Logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#Logo {
+  width: 40px;
+  transform: rotate(90deg); 
+}
+
+.Logo::after {
+  content: "DevJobs";
+  margin-left: 7px;
+}
+
+.Menu {
+  display: flex;
+  gap: 15px;
+  position: relative;
+}
+
+.Menu a {
+  color: white;
+  text-decoration: none;
+  margin: 6px;
+}
+
+.Menu a:hover {
+  color: rgb(42, 42, 225);
+}
+
+.botones,.Boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  background-color: rgb(42, 42, 225);
+  cursor: pointer;
+}
+
+.botones:nth-child(2) {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+#Perfil {
+  width: 30px;
+  margin:10px;
+}
+
+main {
+  text-align: left;
+  margin: 20px;
+}
+
+.portada {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 80px;
+  padding: 80px;
+  width: 100%;
+  height: 300px;
+  background-image:
+    linear-gradient(rgba(16, 25, 34, 0.7), rgba(16, 25, 34, 0.9)),
+    url("portada DevJobs.png");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+h1 {
+  font-size: 45px;
+  margin: 0 0 8px 0;
+}
+
+h1 + h2 {
+  font-size: 20px;
+  margin-top: -10px;
+}
+
+.filtros select {
+  margin-bottom: 20px;
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(29, 44, 60, 0.679);
+  color: white;
+}
+
+.Buscador { /* contenedor lupa + input (+ botón opcional) */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 30px auto;
+  width: 90vw;
+  max-width: 600px;
+  height: 40px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  border: 1px solid gray;
+  background-color: rgba(29, 44, 60, 0.679);
+}
+
+#Buscador {
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.box-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 30px;
+  margin-top: 60px;
+  text-align: center;
+  background-color: rgba(75, 133, 192, 0.2);
+  box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.5);
+  min-width: 260px;
+}
+
+.box img {
+  width: 40px;
+  align-self: center;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: rgba(75, 133, 192, 0.2);
+}
+
+table {
+  width: 100%;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 8px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+.detalle {
+  color: rgba(212, 212, 212, 0.7);
+  font-size: 13px;
+  margin-top: -10px;
+}
+
+.description {
+  color: currentColor;
+  font-size: 15px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-block: 2rem;
+}
+
+.pagination a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: all 0.3s;
+}
+
+.pagination a:hover {
+  background-color: rgb(255, 255, 255);
+  color: black;
+}
+
+.pagination a.is-active {
+  background-color: rgb(42, 42, 225);
+  color: white;
+  pointer-events: none;
+}
