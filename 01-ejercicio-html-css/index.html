@@ -1,1 +1,160 @@
-<!-- Aquí el contenido de tu página index.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DevJobs</title>
+	<meta name="description" content="Portal de empleo especializado en el sector tecnológico.">
+	<link rel="icon" type="image/png" href="icon_DevJobs.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav>
+<header>
+    <div class="Logo">   
+    <img src="carambola.svg" alt="Logo de DebJobs" id="Logo"></img>
+    </div>
+
+    <div class="Menu">   
+        <a href="index.html">Buscar</a>
+        <a href="#">Empleos</a>
+        <a href="#">Empresas</a>
+        <a href="#">Salarios</a>
+    </div>
+
+    <div class="esquina-derecha">   
+        <button class="botones" href="#">Subir CV</button>
+        <img id="Perfil"src="user-circle.svg"</img>
+    </div>
+</header>
+</nav>
+
+<main>
+ <section>
+<h1>Encuentra tu próximo trabajo</h1>
+<p>Explora miles de oportunidades en el sector tecnológico</p>
+</section>   
+
+<article>
+    <form class="Buscador">
+    <label for="Buscador"><img id="lupa" src="search.svg"></label>
+    <input type"text" id="Buscador" name="Buscador" placeholder="Buscar trabajos, empresas o habilidades">
+    </form>
+    <div class="filtros">
+       <select name="Tecnologia" id="Tecnologia">
+            <option value="Cualquier tecnología">Tecnología</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="React">React</option>
+            <option value="Node.js">Node.js</option>
+        </select>
+
+        <select name="Ubicación" id="Ubicación">
+            <option value="Cualquier ubicación">Ubicación</option>
+            <option value="Remoto">Remoto</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Híbrido">Híbrido</option>
+        </select>
+
+        <select name="Tipo de contrato" id="Tipo de contrato">
+            <option value="Cualquier tipo de contrato">Tipo de contrato</option>
+            <option value="Tiempo completo">Tiempo completo</option>
+            <option value="Medio tiempo">Medio tiempo</option>
+            <option value="Contrato">Contrato</option>
+        </select>
+
+        <select name="Nivel de experiencia" id="Nivel de experiencia">
+            <option value="Cualquier nivel de experiencia">Nivel de experiencia</option>
+            <option value="Junior">Junior</option>
+            <option value="Mid-level">Mid-level</option>
+            <option value="Senior">Senior</option>
+        </select>
+    </div>
+</article>
+
+<section class="Resultados">
+<h2>Resultados de la búsqueda</h2>
+<div class="Marco">
+<table class="TablaResultados">
+<tbody>  <!-- Trabajo | Aplicar -->
+<!-- Fila 1 -->
+    <tr> 
+        <td>
+            <h3>Ingeniero de Software</h3>
+            <p class="detalle">Tech Soluctións Inc. | Remoto</p>
+            <p class="description"> Buscamos un ingeniero de software con experiencia en desarrollo web y conocimientos en JavaScript, React y Node.js. El candidato ideal debe ser capaz de trabajar en equipo y tener buenas habilidades de comunicación.</p>
+        </td>
+
+    <td>
+    <button class="botones">Aplicar</button>
+    </td>
+
+  </tr>
+
+  <!-- Fila 2 -->
+    <tr> 
+        <td>
+            <h3>Analista de Datos</h3>
+            <p class="detalle">Data Driven Co. | Ciudad de México</p>
+            <p class="description">Estamos buscando un analista de datos con experiencia en el manejo de grandes conjuntos de datos y herramientas de visualización. Se requiere conocimiento en SQL, Python y R.</p>
+        </td>
+
+    <td>
+    <button class="botones">Aplicar</button>
+    </td>
+    </tr>
+
+<!-- Fila 3 -->
+    <tr> 
+        <td>
+            <h3>Desarrollador de Aplicaciones Móviles</h3>
+            <p class="detalle">Mobile Apps Ltd. | Guadalajara</p>
+            <p class="description">Buscamos un desarrollador de aplicaciones móviles con experiencia en iOS y/o Android. El candidato debe tener conocimientos en Swift, Kotlin y el desarrollo de interfaces de usuario.</p>
+        </td>
+      
+    <td>
+    <button class="botones">Aplicar</button>
+    </td>  
+    </tr>
+
+<!-- Fila 4 -->
+    <tr> 
+        <td>
+            <h3>Ingeniero de DevOps</h3>
+            <p class="detalle">Cloud Services SA | Remoto</p>
+            <p class="description">Estamos buscando un ingeniero de DevOps con experiencia en la gestión de infraestructuras en la nube, automatización de procesos y herramientas de integración continua. Se requiere conocimiento en AWS, Azure o GCP.</p>
+        </td>
+     
+    <td>
+    <button class="botones">Aplicar</button>
+    </td>   
+    </tr>
+
+
+</tbody>
+</table>
+</div>
+</section>
+</main>
+
+<nav class="pagination">
+    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg></a>
+    <a class="is-active" href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#">5</a>
+    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg></a>
+</nav>
+
+
+
+<footer>
+<p>© 2024 DevJobs. Todos los derechos reservados.</p>
+</footer>
+
+</body>
+</html>
+    
