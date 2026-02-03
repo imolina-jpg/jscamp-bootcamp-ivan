@@ -14,9 +14,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 50px;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
   width: 100%;
-  height: 60px;
   position: relative;
   padding: 0 16px;
 }
@@ -35,6 +35,7 @@ header {
 
 #Logo {
   width: 40px;
+  height: 40px;
   transform: rotate(90deg); 
 }
 
@@ -77,6 +78,7 @@ header {
 
 #Perfil {
   width: 30px;
+  height: 30px;
   margin:10px;
 }
 
@@ -113,27 +115,35 @@ h1 + h2 {
   margin-top: -10px;
 }
 
+.filtros {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+
 .filtros select {
-  margin-bottom: 20px;
-  margin-right: 10px;
-  padding: 8px;
+  padding: 1rem;
   border-radius: 5px;
   border: none;
   background-color: rgba(29, 44, 60, 0.679);
   color: white;
 }
 
-.Buscador { /* contenedor lupa + input (+ botón opcional) */
+.seccion-de-busqueda,
+.Resultados {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.input-search-box {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 30px auto;
-  width: 90vw;
-  max-width: 600px;
-  height: 40px;
-  padding: 5px 8px;
-  border-radius: 7px;
-  border: 1px solid gray;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.211);
   background-color: rgba(29, 44, 60, 0.679);
 }
 
@@ -227,4 +237,75 @@ td {
   background-color: rgb(42, 42, 225);
   color: white;
   pointer-events: none;
+}
+
+
+.jobs-listing {
+  border: .5px solid rgba(255, 255, 255, 0.211);
+  border-radius: .5rem;
+  list-style: none;
+  padding-left: 0;
+  margin-block: 0;
+  box-sizing: border-box;
+
+
+  li article {
+    display: flex;
+    box-sizing: border-box;
+    align-items: start;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 0;
+    padding: 1rem;
+
+    div {
+      flex: 1;
+    }
+
+    h3 {
+      margin-block: 0;
+    }
+
+    small {
+      opacity: .60;
+    }
+
+    p {
+      margin-top: 10px;
+      max-width: 80ch;
+    }
+  }
+
+  li:last-child article {
+    border-bottom: none;
+  }
+
+  button {
+    background-color: rgba(255, 255, 255, 0.211);
+    color: white;
+    transition: .5s ease;
+    border: none;
+    padding: .5rem;
+    cursor: pointer;
+    border-radius: .5rem;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.411);
+      outline: none;
+      transition: all .5s ease;
+      transform: scale(1.1);
+    }
+
+    &:focus {
+      outline: none;
+      transform: scale(1.1);
+      transition: all .5s ease;
+    }
+
+    &:active {
+      transform: scale(0.90);
+      transition: all .5s ease;
+    }
+  }
+
+
 }
