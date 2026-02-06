@@ -49,7 +49,7 @@
                 <input type="text" id="Buscador" name="Buscador"
                     placeholder="Buscar trabajos, empresas o habilidades" />
                 </div>
-                <div class="filtros">
+                <div class="Filtros">
                     <select name="Tecnologia" id="Tecnologia">
                         <option value="Cualquier_tecnología">Tecnología</option>
                         <option value="JavaScript">JavaScript</option>
@@ -57,7 +57,7 @@
                         <option value="Node.js">Node.js</option>
                     </select>
 
-                    <select name="Ubicación" id="Ubicación">
+                    <select name="Ubicación" id="Ubicacion">
                         <!-- Es importante que el texto de los valores no tengan espacios ni caracteres especiales, esto porque luego se enviarán por JS y puede dar error -->
                         <option value="Cualquier_ubicación">Ubicación</option>
                         <option value="Remoto">Remoto</option>
@@ -84,15 +84,15 @@
         </section>
         <section class="Resultados">
             <h2>Resultados de la búsqueda</h2>
-            <div class="Marco">
+            <div class="MarcoJobs">
                 <!-- Más que una tabla, se puede interpretar como un lista de resultados -->
                 <ul class="jobs-listing">
-                    <li>
+                    <li class="hijos-jobs">
                         <article>
                             <div>
                                 <!-- Como no hay un h3, no se recomienda saltearlos un nivel de hading. Así que en vez de ser un h4, usaremos h3 -->
-                                <h3>Ingeniero de Software</h3>
-                                <small>Tech Solutions Inc. | Remoto</small>
+                                <h3><a href="01-ejercicio-html-css/DetallesEmpleo.html">Ingeniero de Software</a></h3>
+                                <small>JavaScript. | Remoto</small>
                                 <p>
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                     Velit consectetur labore placeat nisi, consequatur
@@ -105,11 +105,11 @@
                             <button class="button-apply-job">Aplicar</button>
                         </article>
                     </li>
-                    <li>
+                    <li class="hijos-jobs">
                         <article>
                             <div>
                                 <h3>Analista de Datos</h3>
-                                <small>Tech Solutions Inc. | Remoto</small>
+                                <small>JavaScript. | Presencial</small>
                                 <p>
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                     Velit consectetur labore placeat nisi, consequatur
@@ -121,11 +121,11 @@
                             <button class="button-apply-job">Aplicar</button>
                         </article>
                     </li>
-                    <li>
+                    <li class="hijos-jobs">
                         <article>
                             <div>
                                 <h3>Desarrollador de Aplicaciones Móviles</h3>
-                                <small>Tech Solutions Inc. | Remoto</small>
+                                <small>React. | Remoto</small>
                                 <p>
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                     Velit consectetur labore placeat nisi, consequatur
@@ -137,11 +137,11 @@
                             <button class="button-apply-job">Aplicar</button>
                         </article>
                     </li>
-                    <li>
+                    <li class="hijos-jobs">
                         <article>
                             <div>
                                 <h3>Ingeniero de Devops</h3>
-                                <small>Tech Solutions Inc. | Remoto</small>
+                                <small>Node.js. |Híbrido</small>
                                 <p>
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                     Velit consectetur labore placeat nisi, consequatur
