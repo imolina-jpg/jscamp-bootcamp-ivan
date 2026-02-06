@@ -308,4 +308,13 @@ td {
   }
 
 
+
+.button-apply-job{
+  background-color: #09f;
+
+  &.aplicado {     /*Se usa el simbolo & y . para aplicar una clase especifica al boton */
+    background-color: green;
+    pointer-events:none;
+
+}
 }
