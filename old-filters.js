@@ -29,7 +29,7 @@ MarcoJobsSection.addEventListener('click', function(event) {   // Agrega un even
 
 
 
-//FILTROS
+//FILTROS primera parte, solo muestra en consola lo que se selecciona en cada filtro. 
 
 
 const Filtros = document.querySelector('.Filtros');   // Selecciona el contenedor de los filtros.
@@ -54,15 +54,51 @@ if(ItemFiltros.id === 'Nivel_de_experiencia') { // Verifica si el elemento que c
   console.log('Nivel de experiencia seleccionado:', ItemFiltros.value)
 }
 
+//FILTROS (beta) segunda parte, agrega o quita clases a los trabajos dependiendo de si cumplen o no con el filtro seleccionado. 
+
+const ItemsJobs = document.querySelectorAll('.jobsItem'); // Selecciona todos los elementos de trabajo.
+const etiquetas = document.querySelectorAll('.etiquetas'); // Selecciona todos los elementos con la clase 'etiquetas' dentro de los trabajos.
+
+ ItemsJobs.forEach(Item => { // Itera sobre cada elemento de trabajo, "por cada item realiza lo siguiente:"
+  if (ItemFiltros.value === "" ||Item.querySelector('.etiquetas').textContent.includes(ItemFiltros.value) ) {
+     console.log('El item cumple con el filtro:', Item); // Verifica si el texto dentro del elemento de trabajo contiene el valor seleccionado del filtro.
+     Item.style.display = 'flex'; // Si el item cumple con el filtro, se muestra el elemento de trabajo.
+    } else {
+    console.log('El item no cumple con el filtro:', Item);
+    Item.style.display = 'none'; // Si el item no cumple con el filtro, se oculta el elemento de trabajo.
+  } 
+ })
+
 })
 
 
-//SOCORRO, NO ME FUNCIONA EL FILTRO,
 
-//const Etiquetas = document.querySelectorAll('small'); //Accede a todos los elementos "small"
-//    if(Etiquetas===ItemFiltros.value) { // Verifica si el texto de los elementos "small" incluye el valor seleccionado en el filtro.
-//         hijos-jobs.classList.add("active"); // Si el texto incluye el valor del filtro, agrega la clase "active" al elemento "li" para mostrarlo.
+    //APUNTES:
+    //  🔴 Se dispara con cada pulsación de tecla o cambio en el texto
+    //searchInput.addEventListener('input', function() {
+    // Muestra en la consola el texto actual del buscador mientras escribes
+    // console.log(searchInput.value); 
+    //});
 
-//    } else{ // Si el texto no incluye el valor del filtro, agrega la clase "hidden" al elemento "li" para ocultarlo.
-//        hijos-jobs.classList.add("hidden");
-//    }
+    // 🔴 Se dispara cuando el cursor sale del campo de texto
+    // searchInput.addEventListener('blur', function() {
+    //    console.log('Se dispara cuando el campo pierde el foco');
+    // });
+
+
+  // 🔴 Se dispara cuando el formulario se envía, ya sea por un botón de envío o al presionar Enter
+  //  const formulario = document.getElementById('formulario')
+  //  formulario.addEventListener('submit', function (event) {
+  //   event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+  //    console.log('Formulario enviado') 
+  //    })
+
+// 🔴 event. preventDefault() es un método que se utiliza para evitar el comportamiento predeterminado de un evento.
+//  event.preventDefault()
+//  console.log('Formulario enviado')
+// })
+
+// 🔴 Se dispara con cada pulsación de tecla, muestra en la consola la tecla que se presionó. Su contrario es " keyup "
+// document.addEventListener('keydown', function (event) {
+//  console.log('Tecla presionada:', event.key)
+// })

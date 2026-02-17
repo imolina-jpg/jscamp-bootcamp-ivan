@@ -1,0 +1,132 @@
+[
+  {
+    "id": "5b3c2d1a-8e45-4d8c-9f1a-8c2f9a9121a1",
+    "titulo": "Ingeniero de Software",
+    "empresa": "NovaStream Tech",
+    "ubicacion": "Remoto",
+    "descripcion": "Liderazgo técnico en la migración de la arquitectura monolítica a microservicios. Se requiere experiencia optimizando el rendimiento en aplicaciones de alto tráfico y buenas prácticas de Clean Code.",
+    "data": {
+      "tecnologia": "JavaScript",
+      "ubicacion": "Remoto",
+      "contrato": "Tiempo completo",
+      "nivel": "Senior"
+    }
+  },
+  {
+    "id": "6c4d3e2b-9f56-5e9d-0g2b-9d3g0b0232b2",
+    "titulo": "Analista de Datos Web",
+    "empresa": "Metrics & Co.",
+    "ubicacion": "Presencial",
+    "descripcion": "Implementación de scripts de seguimiento personalizados y creación de dashboards interactivos. Colaboración con marketing para interpretar el comportamiento del usuario mediante visualización de datos.",
+    "data": {
+      "tecnologia": "JavaScript",
+      "ubicacion": "Presencial",
+      "contrato": "Tiempo completo",
+      "nivel": "Junior"
+    }
+  },
+  {
+    "id": "7d5e4f3c-0g67-6f0e-1h3c-0e4h1c1343c3",
+    "titulo": "Desarrollador de Aplicaciones Móviles",
+    "empresa": "Appify Solutions",
+    "ubicacion": "Remoto",
+    "descripcion": "Mantenimiento y desarrollo de nuevas funcionalidades para nuestra app de fintech. Enfoque en la experiencia de usuario (UX) y optimización de componentes nativos.",
+    "data": {
+      "tecnologia": "React",
+      "ubicacion": "Remoto",
+      "contrato": "Medio tiempo",
+      "nivel": "Senior"
+    }
+  },
+  {
+    "id": "8e6f5g4d-1h78-7g1f-2i4d-1f5i2d2454d4",
+    "titulo": "Ingeniero DevOps",
+    "empresa": "CloudCore Systems",
+    "ubicacion": "Híbrido",
+    "descripcion": "Automatización de pipelines CI/CD y gestión de infraestructura como código. Creación de herramientas internas para mejorar la productividad del equipo de desarrollo.",
+    "data": {
+      "tecnologia": "Node.js",
+      "ubicacion": "Híbrido",
+      "contrato": "Tiempo completo",
+      "nivel": "Mid-level"
+    }
+  },
+  {
+    "id": "9f7a6h5e-2i89-8h2g-3j5e-2g6j3e3565e5",
+    "titulo": "Desarrollador Backend Python",
+    "empresa": "DataFlow Analytics",
+    "ubicacion": "Remoto",
+    "descripcion": "Diseño de APIs RESTful escalables para procesamiento de datos masivos. Integración con bases de datos relacionales y no relacionales en entorno cloud.",
+    "data": {
+      "tecnologia": "Python",
+      "ubicacion": "Remoto",
+      "contrato": "Tiempo completo",
+      "nivel": "Senior"
+    }
+  },
+  {
+    "id": "0g8b7i6f-3j90-9i3h-4k6f-3h7k4f4676f6",
+    "titulo": "Especialista E-learning (Moodle)",
+    "empresa": "EduTech Global",
+    "ubicacion": "Remoto",
+    "descripcion": "Desarrollo y personalización de plugins para entornos LMS Moodle. Integración de contenidos SCORM/H5P y soporte técnico a la plataforma educativa corporativa.",
+    "data": {
+      "tecnologia": "PHP",
+      "ubicacion": "Remoto",
+      "contrato": "Freelance",
+      "nivel": "Mid-level"
+    }
+  },
+  {
+    "id": "1h9c8j7g-4k01-0j4i-5l7g-4i8l5g5787g7",
+    "titulo": "Desarrollador de Videojuegos Unity",
+    "empresa": "IndiePixel Studios",
+    "ubicacion": "Híbrido",
+    "descripcion": "Programación de mecánicas de juego, IA de enemigos y sistemas de físicas para un nuevo título de estrategia en tiempo real. Optimización para consolas y PC.",
+    "data": {
+      "tecnologia": "C#",
+      "ubicacion": "Híbrido",
+      "contrato": "Tiempo completo",
+      "nivel": "Mid-level"
+    }
+  },
+  {
+    "id": "2i0d9k8h-5l12-1k5j-6m8h-5j9m6h6898h8",
+    "titulo": "Arquitecto de Soluciones Cloud",
+    "empresa": "SkyNet Services",
+    "ubicacion": "Presencial",
+    "descripcion": "Definición de la estrategia de migración a la nube para grandes clientes bancarios. Aseguramiento de cumplimiento normativo y seguridad en entornos AWS/Azure.",
+    "data": {
+      "tecnologia": "AWS",
+      "ubicacion": "Presencial",
+      "contrato": "Tiempo completo",
+      "nivel": "Senior"
+    }
+  },
+  {
+    "id": "3j1e0l9i-6m23-2l6k-7n9i-6k0n7i7909i9",
+    "titulo": "Diseñador UI/UX",
+    "empresa": "Creative Logic",
+    "ubicacion": "Remoto",
+    "descripcion": "Creación de prototipos de alta fidelidad y sistemas de diseño. Investigación de usuarios y pruebas de usabilidad para mejorar la conversión en e-commerce.",
+    "data": {
+      "tecnologia": "Figma",
+      "ubicacion": "Remoto",
+      "contrato": "Por proyecto",
+      "nivel": "Junior"
+    }
+  },
+  {
+    "id": "4k2f1m0j-7n34-3m7l-8o0j-7l1o8j8010j0",
+    "titulo": "QA Automation Engineer",
+    "empresa": "BugFree Zone",
+    "ubicacion": "Híbrido",
+    "descripcion": "Desarrollo de scripts de pruebas automatizadas E2E. Mantenimiento del entorno de staging y reporte de incidencias en Jira.",
+    "data": {
+      "tecnologia": "Selenium",
+      "ubicacion": "Híbrido",
+      "contrato": "Tiempo completo",
+      "nivel": "Mid-level"
+    }
+  }
+]

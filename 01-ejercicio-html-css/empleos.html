@@ -8,7 +8,8 @@
     <meta name="description" content="Portal de empleo especializado en el sector tecnológico.">
     <link rel="icon" type="image/png" href="icon_DevJobs.png">
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="./script.js"></script>   <!-- Esto es para añadir JavaScript al HTML desde otro archivo-->
+
+    <script type="module" src="./main.js"></script>
 
 </head>
 
@@ -51,15 +52,17 @@
                 </div>
                 <div class="Filtros">
                     <select name="Tecnologia" id="Tecnologia">
-                        <option value="Cualquier_tecnología">Tecnología</option>
+                        <option value="">Tecnología</option>
                         <option value="JavaScript">JavaScript</option>
                         <option value="React">React</option>
                         <option value="Node.js">Node.js</option>
                     </select>
 
-                    <select name="Ubicación" id="Ubicacion">
+<!-- Se puede usar optgroup para agrupar opciones-->
+
+                    <select name="Ubicacion" id="Ubicacion">
                         <!-- Es importante que el texto de los valores no tengan espacios ni caracteres especiales, esto porque luego se enviarán por JS y puede dar error -->
-                        <option value="Cualquier_ubicación">Ubicación</option>
+                        <option value="">Ubicación</option>
                         <option value="Remoto">Remoto</option>
                         <option value="Presencial">Presencial</option>
                         <option value="Híbrido">Híbrido</option>
@@ -67,14 +70,14 @@
 
                     <!-- El `name` y el `id` también tienen que evitar espacios y caracteres especiales -->
                     <select name="Tipo_de_contrato" id="Tipo_de_contrato">
-                        <option value="Cualquier_tipo_de_contrato">Tipo de contrato</option>
-                        <option value="Tiempo_completo">Tiempo completo</option>
-                        <option value="Medio_tiempo">Medio tiempo</option>
+                        <option value="">Tipo de contrato</option>
+                        <option value="Tiempo completo">Tiempo completo</option>
+                        <option value="Medio tiempo">Medio tiempo</option>
                         <option value="Contrato">Contrato</option>
                     </select>
 
                     <select name="Nivel_de_experiencia" id="Nivel_de_experiencia">
-                        <option value="Cualquier_nivel_de_experiencia">Nivel de experiencia</option>
+                        <option value="">Nivel de experiencia</option>
                         <option value="Junior">Junior</option>
                         <option value="Mid-level">Mid-level</option>
                         <option value="Senior">Senior</option>
@@ -82,78 +85,13 @@
                 </div>
             </form>
         </section>
-        <section class="Resultados">
+        <section>
             <h2>Resultados de la búsqueda</h2>
             <div class="MarcoJobs">
                 <!-- Más que una tabla, se puede interpretar como un lista de resultados -->
                 <ul class="jobs-listing">
-                    <li class="hijos-jobs">
-                        <article>
-                            <div>
-                                <!-- Como no hay un h3, no se recomienda saltearlos un nivel de hading. Así que en vez de ser un h4, usaremos h3 -->
-                                <h3><a href="01-ejercicio-html-css/DetallesEmpleo.html">Ingeniero de Software</a></h3>
-                                <small>JavaScript. | Remoto</small>
-                                <p>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                    Velit consectetur labore placeat nisi, consequatur
-                                    exercitationem quaerat eveniet obcaecati reprehenderit
-                                    necessitatibus. Laborum ipsum officia, quo nostrum nesciunt
-                                    sapiente voluptas molestias nam!
-                                </p>
-                            </div>
-
-                            <button class="button-apply-job">Aplicar</button>
-                        </article>
-                    </li>
-                    <li class="hijos-jobs">
-                        <article>
-                            <div>
-                                <h3>Analista de Datos</h3>
-                                <small>JavaScript. | Presencial</small>
-                                <p>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                    Velit consectetur labore placeat nisi, consequatur
-                                    exercitationem quaerat eveniet obcaecati reprehenderit
-                                    necessitatibus. Laborum ipsum officia, quo nostrum nesciunt
-                                    sapiente voluptas molestias nam!
-                                </p>
-                            </div>
-                            <button class="button-apply-job">Aplicar</button>
-                        </article>
-                    </li>
-                    <li class="hijos-jobs">
-                        <article>
-                            <div>
-                                <h3>Desarrollador de Aplicaciones Móviles</h3>
-                                <small>React. | Remoto</small>
-                                <p>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                    Velit consectetur labore placeat nisi, consequatur
-                                    exercitationem quaerat eveniet obcaecati reprehenderit
-                                    necessitatibus. Laborum ipsum officia, quo nostrum nesciunt
-                                    sapiente voluptas molestias nam!
-                                </p>
-                            </div>
-                            <button class="button-apply-job">Aplicar</button>
-                        </article>
-                    </li>
-                    <li class="hijos-jobs">
-                        <article>
-                            <div>
-                                <h3>Ingeniero de Devops</h3>
-                                <small>Node.js. |Híbrido</small>
-                                <p>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                    Velit consectetur labore placeat nisi, consequatur
-                                    exercitationem quaerat eveniet obcaecati reprehenderit
-                                    necessitatibus. Laborum ipsum officia, quo nostrum nesciunt
-                                    sapiente voluptas molestias nam!
-                                </p>
-                            </div>
-                            <button class="button-apply-job">Aplicar</button>
-                        </article>
-                    </li>
-                </ul>
+                    <!-- Aquí es donde se van a renderizar los empleos desde JavaScript vía-->
+                </ul>  
             </div>
         </section>
     </main>

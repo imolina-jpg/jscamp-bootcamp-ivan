@@ -262,7 +262,7 @@ td {
   box-sizing: border-box;
 
 
-  li article {       /*Esto es cada item de la lista, es decir, cada empleo*/
+  .jobsItem  {       /*Esto es cada item de la lista, es decir, cada empleo*/
     display: flex;
     box-sizing: border-box;
     align-items: start;
@@ -270,27 +270,10 @@ td {
     border-radius: 0;
     padding: 1rem;
 
-    &:hidden {  /*Esto es para ocultar un empleo, no seleccionado*/
-      opacity: 0.5;
-      pointer-events: none;
+    &.is-hidden {  /*Esto es para ocultar un empleo, no seleccionado*/
+      display: none;
     }
-    
-    &:active{   
-      background-color: rgba(255, 255, 255, 0.09);
-      transition: all .5s ease;
-    }
-  }
 
- 
-  
-  article {
-    display: flex;
-    box-sizing: border-box;
-    align-items: start;
-    border-bottom: 1px solid rgba(255, 255, 255, .3);
-    border-radius: 0;
-    padding: 1rem;
-  }
     div {
       flex: 1;
     }
@@ -307,8 +290,9 @@ td {
       margin-top: 10px;
       max-width: 80ch;
     }
-  
-}
+
+  }
+
 
  button { 
     background-color: rgba(255, 255, 255, 0.211);
@@ -341,7 +325,6 @@ td {
 
 .button-apply-job{
   background-color: #09f;
-
   &.aplicado {     /*Se usa el simbolo & y . para aplicar una clase especifica al boton */
     background-color: green;
     pointer-events:none;
