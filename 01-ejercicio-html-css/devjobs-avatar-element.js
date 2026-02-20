@@ -6,18 +6,44 @@ class DevJobsAvatar extends HTMLElement { //podra heredar las propiedades y meto
         this.attachShadow({ mode: 'open' }); //esto es para crear un shadow DOM, que es una forma de encapsular el contenido del elemento personalizado para que no afecte al resto de la página. El modo 'open' permite acceder al shadow DOM desde fuera del elemento personalizado.
     }
 
-render() { //el método render es un método que se llama cada vez que se quiere actualizar el contenido del elemento personalizado.
-//aqui definimos el contenido HTML que queremos que tenga nuestro nuevo elemento personalizado. En este caso, es una imagen con la clase "avatar".    
 
-    this.innerHTML = `  
-        <img
-        src="https://avatars.githubusercontent.com/u/60507236?v=4"
-        alt="Avatar de DevJobs"
+
+
+createUrl(service, username) {  //este método es para crear la URL de la imagen del avatar a partir del servicio y el nombre de usuario.
+  return `https://unavatar.io/${service}/${username}`
+}
+
+//el método render es un método que se llama cada vez que se quiere actualizar el contenido del elemento personalizado.
+//aqui definimos el contenido HTML que queremos que tenga nuestro nuevo elemento personalizado. En este caso, es una imagen con la clase "avatar".    
+//con Shadow DOM: Los estilos dentro del componente no afectan al resto de la página. Cada instancia del componente tiene su propio árbol DOM encapsulado
+
+render() {
+
+    const service = this.getAttribute('service') ?? 'github' //esto es para obtener el valor del atributo "service" que se le puede pasar al elemento personalizado. Si no se le pasa ningún valor (null o undefined), se le asigna el valor por defecto 'github' usando ?? de esta manera. 
+    const username = this.getAttribute('username') ?? 'midudev' //esto es para obtener el valor del atributo "username" que se le puede pasar al elemento personalizado. 
+    const size = this.getAttribute('size') ?? '40' 
+    const url = this.createUrl(service, username) //esto es para crear la URL de la imagen del avatar a partir del servicio y el nombre de usuario usando el método createUrl que hemos definido ANTES.
+
+
+    this.shadowRoot.innerHTML = `  
+    <style>
+        img {
+            width: ${size}px;
+            height: ${size}px;
+            border-radius: 9999px;
+        }
+    </style>
+
+    <img 
+        src="${url}"
+        alt="Avatar de ${username}"
         class="avatar"
-        style="width: 40px; height: 40px; border-radius: 50%;"
-        />
+    />
     `
 }
+
+//src="${url}". aqui se asigna la URL de la imagen del avatar que hemos creado con el método createUrl.   
+//alt="Avatar de ${username}". aqui se asigna el texto alternativo de la imagen del avatar, que es "Avatar de " seguido del nombre de usuario que se le ha pasado al elemento personalizado.
 
     connectedCallback() { //el método connectedCallback se llama cada vez que el elemento personalizado se conecta al DOM (Document Object Model). Es decir, cuando se agrega a la página web.
         this.render(); //cuando el elemento se conecta al DOM, se llama al método render para mostrar el contenido definido en el método render.

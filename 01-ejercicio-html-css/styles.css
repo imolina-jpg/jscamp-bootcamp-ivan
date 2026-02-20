@@ -24,7 +24,7 @@ header {
 .esquina-derecha {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .Logo {
@@ -161,6 +161,16 @@ small{
 }
 
 #Buscador {
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+#BuscadorEmpleo {
   color: white;
   width: 100%;
   height: 100%;

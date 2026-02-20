@@ -9,7 +9,12 @@
     <link rel="icon" type="image/png" href="icon_DevJobs.png">
     <link rel="stylesheet" href="styles.css">
 
-    <script type="module" src="./main.js"></script>
+    <script type="module" src="./devjobs-avatar-element.js"></script>
+     <script type="module" src="./AplicarBoton.js"></script>
+     <script type="module" src="./Fetch-data.js"></script>
+     <script type="module" src="./Filtros.js"></script>
+     <script type="module" src="./search.js"></script>
+
 
 </head>
 
@@ -46,8 +51,8 @@
             <!-- El propósito del formulario es buscar empleos, por lo que su role tiene sentido que sea `search`. Por otro lado, como su objetivo es ese, tiene sentido que los select estén dentro de él -->
             <form class="Buscador" role="search">
                 <div class="input-search-box">
-                    <label for="Buscador"><img id="lupa" src="search.svg" alt="Lupa de búsqueda"></label>
-                <input type="text" id="Buscador" name="Buscador"
+                    <label for="BuscadorEmpleo"><img id="lupa" src="search.svg" alt="Lupa de búsqueda"></label>
+                <input type="text" id="BuscadorEmpleo" name="Buscador"
                     placeholder="Buscar trabajos, empresas o habilidades" />
                 </div>
                 <div class="Filtros">
@@ -90,7 +95,7 @@
             <div class="MarcoJobs">
                 <!-- Más que una tabla, se puede interpretar como un lista de resultados -->
                 <ul class="jobs-listing">
-                    <!-- Aquí es donde se van a renderizar los empleos desde JavaScript vía-->
+                    <!-- Aquí es donde se van a renderizar los empleos desde JavaScript vía json-->
                 </ul>  
             </div>
         </section>
