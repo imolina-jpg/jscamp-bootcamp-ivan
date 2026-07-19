@@ -3,7 +3,6 @@ import { useParams } from 'react-router'
 import snarkdown from 'snarkdown'
 
 import { Link } from '../components/Link.jsx'
-import { useRouter } from '../hooks/useRouter.jsx'
 import { FavoriteButton } from '../components/FavoriteButton.jsx'
 import { useAuthStore } from '../store/authStore.js'
 import styles from './Detail.module.css'
@@ -46,10 +45,6 @@ export function DetailPage() {
   // Otro consumidor de la store, en una rama del árbol totalmente distinta
   // a la del Header. Ninguno de los dos sabe que el otro existe.
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
-
-  // goBack sale de NUESTRO hook, no de React Router. El componente no sabe
-  // qué librería hay detrás: esa es la gracia del patrón de abstracción.
-  const { goBack } = useRouter()
 
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -132,13 +127,6 @@ export function DetailPage() {
         </ol>
       </nav>
 
-      {/* Volver a donde estabas, conservando los filtros de la búsqueda.
-          Un <Link href="/search"> te llevaría a la búsqueda vacía; goBack()
-          te devuelve a la página exacta del historial. */}
-      <button className={styles.backButton} onClick={goBack}>
-        ← Volver
-      </button>
-
       <header className={styles.header}>
         <h1>{job.titulo}</h1>
         <p className={styles.company}>
@@ -173,15 +161,6 @@ export function DetailPage() {
       <JobSection title="Responsabilidades" content={job.content?.responsibilities} />
       <JobSection title="Requisitos" content={job.content?.requirements} />
       <JobSection title="Acerca de la empresa" content={job.content?.about} />
-
-      {/* El diseño de referencia repite la llamada a la acción al final:
-          después de leerse toda la oferta, el botón está a mano sin tener
-          que volver a subir. */}
-      <div className={styles.footerCta}>
-        <button className="button-apply-job" disabled={!isLoggedIn}>
-          {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
-        </button>
-      </div>
     </main>
   )
 }

@@ -51,13 +51,12 @@
   los de react aunque el usuario haya elegido "java". La interfaz miente.
   Con `set` se queda en `?technology=java` y todo cuadra.
 
-- **Ejercicio 1 de la lección 8 (filtro nuevo).** El `seniority` que propone el
-  enunciado ya existía en el proyecto (nuestro "Nivel de experiencia" → `level`),
-  así que añadimos uno nuevo de verdad: **resultados por página** (`?limit=`),
-  que la API ya soportaba. Incluye lista blanca de valores, para que un
-  `?limit=9999` escrito a mano caiga al valor por defecto. **Duda:** ¿es
-  correcto tratar `limit` como un filtro más en la URL, o los ajustes de
-  visualización deberían ir aparte (por ejemplo en localStorage)?
+- **Ejercicio 1 de la lección 8 (filtro nuevo).** El enunciado propone añadir
+  un filtro `seniority` con valores junior/mid/senior. Ese filtro **ya existe**
+  en el proyecto: es el select "Nivel de experiencia", que manda `level` a la
+  API con esos mismos valores, se inicializa desde la URL y se actualiza junto
+  a los demás. Cumple los tres requisitos del ejercicio tal cual está.
+  **Duda:** ¿se esperaba añadir un filtro distinto además de ese?
 
 - **Ejercicio 2 de la lección 8:** no había nada que convertir. Todos los
   `useState` del proyecto se inicializan con literales (`false`, `null`, `[]`).

@@ -114,14 +114,6 @@
   margin-bottom: 0.75rem;
 }
 
-/* Bloque final que repite la llamada a la acción, como en el diseño de
-   referencia: tras leerse toda la oferta, el usuario tiene el botón a mano
-   sin volver a subir. */
-.footerCta {
-  border-top: 1px solid var(--border);
-  padding-top: 2rem;
-}
-
 .loading,
 .notFound {
   max-width: 1280px;
