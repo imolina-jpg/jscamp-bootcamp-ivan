@@ -56,7 +56,7 @@ export function ProfilePage() {
   }, [favoritesKey])
 
   return (
-    <main className="job-detail">
+    <main className="page">
       <title>Mi perfil - DevJobs</title>
 
       <h1 style={{ display: 'block', marginBottom: '1.5rem' }}>Mis favoritos</h1>

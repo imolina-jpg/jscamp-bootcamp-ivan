@@ -19,7 +19,7 @@ export function LoginPage() {
   }
 
   return (
-    <main className="job-detail">
+    <main className="page">
       <title>Iniciar sesión - DevJobs</title>
 
       <h1 style={{ display: 'block', marginBottom: '0.5rem' }}>Iniciar sesión</h1>

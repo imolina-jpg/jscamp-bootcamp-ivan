@@ -474,6 +474,15 @@ article {
   }
 }
 
+/* Contenedor de páginas simples (login, perfil).
+   El detalle de empleo tiene el suyo propio en Detail.module.css. */
+.page {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
 /* Enlaces de navegación del header (NavLink) */
 .nav-link {
   position: relative;
