@@ -1,5 +1,7 @@
 import { useId, useRef } from 'react'
 
+import { RESULTS_PER_PAGE_OPTIONS } from '../constants.js'
+
 /**
  * Custom hook con la lógica del buscador de texto.
  *
@@ -28,11 +30,19 @@ const useSearchForm = ({ onTextFilter }) => {
   return { handleTextChange }
 }
 
-export function SearchFormSection({ onTextFilter, onFilterChange, filters, initialText }) {
+export function SearchFormSection({
+  onTextFilter,
+  onFilterChange,
+  onResultsPerPageChange,
+  filters,
+  resultsPerPage,
+  initialText,
+}) {
   const idText = useId()
   const idTechnology = useId()
   const idLocation = useId()
   const idExperienceLevel = useId()
+  const idResultsPerPage = useId()
 
   const inputRef = useRef()
 
@@ -157,6 +167,25 @@ export function SearchFormSection({ onTextFilter, onFilterChange, filters, initi
             <option value="mid">Mid-level</option>
             <option value="senior">Senior</option>
             <option value="lead">Lead</option>
+          </select>
+
+          {/* Filtro añadido en el ejercicio de la lección 8. Funciona igual
+              que los otros: su valor sale de la URL (?limit=8) y al cambiarlo
+              se escribe allí, así que sobrevive a recargas y es compartible. */}
+          <label htmlFor={idResultsPerPage} className="sr-only">
+            Resultados por página
+          </label>
+          <select
+            name="resultsPerPage"
+            id={idResultsPerPage}
+            value={resultsPerPage}
+            onChange={(event) => onResultsPerPageChange(event.target.value)}
+          >
+            {RESULTS_PER_PAGE_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option} por página
+              </option>
+            ))}
           </select>
         </div>
       </form>

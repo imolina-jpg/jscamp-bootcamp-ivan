@@ -25,7 +25,13 @@ export function JobCard({ job }) {
           la accesibilidad (el navegador no sabe qué acción quieres al pulsar).
           Así el botón "Aplicar" sigue siendo un hermano independiente y
           funciona exactamente igual que antes. */}
-      <Link href={`/job/${job.id}`} className="job-card-link">
+      <Link
+        href={`/job/${job.id}`}
+        className="job-card-link"
+        /* Sin esto, un lector de pantalla lee el enlace como el título suelto.
+           Con aria-label anuncia la acción completa y el contexto. */
+        aria-label={`Ver detalles de ${job.titulo} en ${job.empresa}`}
+      >
         <h3>{job.titulo}</h3>
         <small>
           {job.empresa} | {job.ubicacion}

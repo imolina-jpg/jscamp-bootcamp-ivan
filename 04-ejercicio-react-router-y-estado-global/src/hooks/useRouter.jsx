@@ -31,8 +31,20 @@ export function useRouter() {
     [navigate]
   )
 
+  // Extender la capa de abstracción es barato: añadimos una utilidad aquí y
+  // TODOS los componentes pueden usarla al momento, sin tocar ninguno.
+  // navigate(-1) retrocede una entrada del historial, como el botón "atrás"
+  // del navegador. Con números: -2 retrocede dos, 1 avanza una.
+  const goBack = useCallback(() => {
+    navigate(-1)
+  }, [navigate])
+
   return {
     currentPath: location.pathname,
     navigateTo,
+    goBack,
+    // Devolvemos también el `location` entero por si algún componente necesita
+    // el search o el hash, no solo el pathname.
+    location,
   }
 }

@@ -1,0 +1,131 @@
+/* CSS Module de la página de detalle.
+ *
+ * ¿Por qué un .module.css y no index.css? Porque estas clases solo las usa
+ * este componente. Vite les añade un sufijo único al compilar (container →
+ * _container_1a2b3), así que es imposible que choquen con una clase del mismo
+ * nombre en otro archivo. En index.css dejamos solo lo que es global.
+ *
+ * Ojo: la clase .prose NO está aquí, sigue en index.css. Es a propósito:
+ * estiliza el HTML que genera snarkdown, y ese HTML no pasa por el módulo.
+ */
+
+.container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.breadcrumb {
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+  }
+
+  /* Pintamos el separador con CSS en vez de meterlo en el HTML: así los
+     lectores de pantalla no leen "barra" entre cada elemento. */
+  li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    color: var(--text-muted);
+  }
+
+  a {
+    color: var(--text-muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--primary-light);
+      text-decoration: underline;
+    }
+  }
+
+  [aria-current='page'] {
+    color: var(--text-secondary);
+  }
+}
+
+.backButton {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-light);
+  }
+}
+
+.header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    /* El h1 global es flex por el logo del header; aquí no lo queremos. */
+    display: block;
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.company {
+  color: var(--text-muted);
+  font-size: 1.125rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 1.25rem 0;
+
+  li {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Bloque final que repite la llamada a la acción, como en el diseño de
+   referencia: tras leerse toda la oferta, el usuario tiene el botón a mano
+   sin volver a subir. */
+.footerCta {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+
+.loading,
+.notFound {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}

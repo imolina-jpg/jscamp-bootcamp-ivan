@@ -5,7 +5,9 @@ import { Pagination } from '../components/Pagination.jsx'
 import { SearchFormSection } from '../components/SearchFormSection.jsx'
 import { JobListings } from '../components/JobListings.jsx'
 
-const RESULTS_PER_PAGE = 4
+// El número de resultados por página ya no es una constante fija: ahora es un
+// filtro más que el usuario controla y que vive en la URL (?limit=8).
+import { DEFAULT_RESULTS_PER_PAGE, RESULTS_PER_PAGE_OPTIONS } from '../constants.js'
 
 /**
  * Antes teníamos los filtros duplicados en dos sitios: en useState y en la URL,
@@ -33,6 +35,14 @@ const useFilters = () => {
   // Number('') es 0 y Number(null) también, así que el `|| 1` cubre los dos casos.
   const currentPage = Number(searchParams.get('page')) || 1
 
+  // Filtro nuevo: cuántos resultados por página. Igual que los demás, su
+  // fuente de la verdad es la URL. Validamos que sea uno de los permitidos:
+  // si alguien escribe ?limit=9999 a mano, caemos al valor por defecto.
+  const limitFromUrl = Number(searchParams.get('limit'))
+  const resultsPerPage = RESULTS_PER_PAGE_OPTIONS.includes(limitFromUrl)
+    ? limitFromUrl
+    : DEFAULT_RESULTS_PER_PAGE
+
   // Esto SÍ es estado del componente: son datos que vienen de la API,
   // no decisiones del usuario, así que no pintan nada en la URL.
   const [jobs, setJobs] = useState([])
@@ -56,9 +66,16 @@ const useFilters = () => {
 
         // `page` es cosa nuestra; la API trabaja con limit + offset.
         const page = Number(params.get('page')) || 1
+
+        // `limit` ya viaja en la URL, pero lo reescribimos con el valor
+        // validado para no mandarle a la API un ?limit=9999 escrito a mano.
+        const limit = RESULTS_PER_PAGE_OPTIONS.includes(Number(params.get('limit')))
+          ? Number(params.get('limit'))
+          : DEFAULT_RESULTS_PER_PAGE
+
         params.delete('page')
-        params.set('limit', RESULTS_PER_PAGE)
-        params.set('offset', (page - 1) * RESULTS_PER_PAGE)
+        params.set('limit', limit)
+        params.set('offset', (page - 1) * limit)
 
         const response = await fetch(
           `https://jscamp-api.vercel.app/api/jobs?${params.toString()}`,
@@ -81,7 +98,7 @@ const useFilters = () => {
     return () => controller.abort()
   }, [searchParamsString])
 
-  const totalPages = Math.ceil(total / RESULTS_PER_PAGE)
+  const totalPages = Math.ceil(total / resultsPerPage)
 
   /**
    * Actualiza un parámetro de la URL.
@@ -131,6 +148,15 @@ const useFilters = () => {
     updateSearchParams({ text: newTextToFilter })
   }
 
+  const handleResultsPerPageChange = (newLimit) => {
+    // Si eligen el valor por defecto mandamos cadena vacía para que se borre
+    // de la URL: ?limit=4 no aporta nada si 4 es lo que ya sale por defecto.
+    const value = Number(newLimit) === DEFAULT_RESULTS_PER_PAGE ? '' : String(newLimit)
+    // resetPage por defecto: al cambiar cuántos caben por página, el número
+    // de página en el que estabas ya no significa lo mismo.
+    updateSearchParams({ limit: value })
+  }
+
   return {
     loading,
     jobs,
@@ -139,9 +165,11 @@ const useFilters = () => {
     currentPage,
     textToFilter,
     filters,
+    resultsPerPage,
     handlePageChange,
     handleFilterChange,
     handleTextFilter,
+    handleResultsPerPageChange,
   }
 }
 
@@ -154,9 +182,11 @@ export function SearchPage() {
     currentPage,
     textToFilter,
     filters,
+    resultsPerPage,
     handlePageChange,
     handleFilterChange,
     handleTextFilter,
+    handleResultsPerPageChange,
   } = useFilters()
 
   const title = loading
@@ -171,8 +201,10 @@ export function SearchPage() {
       <SearchFormSection
         initialText={textToFilter}
         filters={filters}
+        resultsPerPage={resultsPerPage}
         onFilterChange={handleFilterChange}
         onTextFilter={handleTextFilter}
+        onResultsPerPageChange={handleResultsPerPageChange}
       />
 
       <section>

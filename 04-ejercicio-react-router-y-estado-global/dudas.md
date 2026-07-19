@@ -21,9 +21,20 @@
 
 - Para enlazar la tarjeta al detalle sin romper el botón "Aplicar", hemos
   enlazado solo el bloque de texto, porque meter un `<button>` dentro de un
-  `<a>` es HTML inválido. **Duda:** si se quiere que TODA la tarjeta sea
-  clicable, ¿la forma correcta es el truco del "stretched link" con
-  `position: absolute` sobre el enlace?
+  `<a>` es HTML inválido. Coincide con la "Solución 3 (híbrida)" que propone
+  la lección 6. **Duda:** si se quiere que TODA la tarjeta sea clicable,
+  ¿la forma correcta es el truco del "stretched link" con `position: absolute`?
+
+- La lección 5 da por hecho que el andamio trae un `detail.module.css` "con
+  todos los estilos preparados", pero en el ejercicio no viene. Los hemos
+  escrito desde cero en `src/pages/Detail.module.css`. **Duda:** ¿era ese
+  archivo parte del material y se nos ha pasado descargarlo?
+
+- No hemos podido hacer la comparación "pixel por pixel" que pide la lección 7:
+  el proyecto de Stitch solo deja ver miniaturas al 17% y no permite ampliar
+  cada pantalla. Sí hemos corregido con lo que se distingue: el título de la
+  última sección es "Acerca de la empresa" (no "Sobre la empresa") y el diseño
+  repite el botón de aplicar al final del contenido.
 
 ## Tercera parte
 
@@ -31,6 +42,27 @@
   (`defaultValue`) porque con el debounce de 500 ms daba saltos raros al
   escribir. Los selects sí van controlados. ¿Hay una forma limpia de tenerlo
   controlado y con debounce a la vez?
+
+- **Ejercicio 3 de la lección 8 (bug de `append`), hecho y comprobado.** Al
+  cambiar `set` por `append` y tocar el filtro tres veces, la URL queda
+  `?technology=react&technology=python&technology=java`. Lo llamativo es que
+  no solo ensucia la URL: `searchParams.get()` devuelve **el primer** valor,
+  así que el select se queda mostrando "react" y los resultados siguen siendo
+  los de react aunque el usuario haya elegido "java". La interfaz miente.
+  Con `set` se queda en `?technology=java` y todo cuadra.
+
+- **Ejercicio 1 de la lección 8 (filtro nuevo).** El `seniority` que propone el
+  enunciado ya existía en el proyecto (nuestro "Nivel de experiencia" → `level`),
+  así que añadimos uno nuevo de verdad: **resultados por página** (`?limit=`),
+  que la API ya soportaba. Incluye lista blanca de valores, para que un
+  `?limit=9999` escrito a mano caiga al valor por defecto. **Duda:** ¿es
+  correcto tratar `limit` como un filtro más en la URL, o los ajustes de
+  visualización deberían ir aparte (por ejemplo en localStorage)?
+
+- **Ejercicio 2 de la lección 8:** no había nada que convertir. Todos los
+  `useState` del proyecto se inicializan con literales (`false`, `null`, `[]`).
+  Los que sí leían de la URL desaparecieron al pasar los filtros a
+  `useSearchParams`.
 
 ## Cuarta parte
 

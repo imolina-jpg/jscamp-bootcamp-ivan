@@ -3,8 +3,10 @@ import { useParams } from 'react-router'
 import snarkdown from 'snarkdown'
 
 import { Link } from '../components/Link.jsx'
+import { useRouter } from '../hooks/useRouter.jsx'
 import { FavoriteButton } from '../components/FavoriteButton.jsx'
 import { useAuthStore } from '../store/authStore.js'
+import styles from './Detail.module.css'
 
 /**
  * Sección de texto largo del empleo.
@@ -26,8 +28,10 @@ function JobSection({ title, content }) {
   const html = snarkdown(content)
 
   return (
-    <section className="job-detail-section">
-      <h2>{title}</h2>
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>{title}</h2>
+      {/* Combinamos una clase del módulo con una global usando un template
+          literal. `prose` va sin styles. porque vive en index.css. */}
       <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
     </section>
   )
@@ -42,6 +46,10 @@ export function DetailPage() {
   // Otro consumidor de la store, en una rama del árbol totalmente distinta
   // a la del Header. Ninguno de los dos sabe que el otro existe.
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+
+  // goBack sale de NUESTRO hook, no de React Router. El componente no sabe
+  // qué librería hay detrás: esa es la gracia del patrón de abstracción.
+  const { goBack } = useRouter()
 
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -83,7 +91,7 @@ export function DetailPage() {
 
   if (loading) {
     return (
-      <main className="job-detail">
+      <main className={styles.loading}>
         <p>Cargando empleo...</p>
       </main>
     )
@@ -91,24 +99,28 @@ export function DetailPage() {
 
   if (error) {
     return (
-      <main className="job-detail">
+      <main className={styles.notFound}>
         <title>Empleo no encontrado - DevJobs</title>
-        <h1>Vaya...</h1>
-        <p>{error}</p>
-        <Link href="/search">← Volver a la búsqueda</Link>
+        <h1 style={{ display: 'block', marginBottom: '0.5rem' }}>Oferta no encontrada</h1>
+        <p style={{ marginBottom: '1.5rem' }}>
+          Puede que esta oferta haya caducado o que la URL no sea correcta.
+        </p>
+        <Link href="/search" className={styles.backButton}>
+          Volver a la lista de empleos
+        </Link>
       </main>
     )
   }
 
   return (
-    <main className="job-detail">
+    <main className={styles.container}>
       <title>{`${job.titulo} en ${job.empresa} - DevJobs`}</title>
       <meta name="description" content={job.descripcion} />
 
       {/* Breadcrumbs (migas de pan): le dicen al usuario dónde está y cómo
           volver. aria-current="page" marca el elemento actual para los
           lectores de pantalla. */}
-      <nav aria-label="Ruta de navegación" className="breadcrumbs">
+      <nav aria-label="Ruta de navegación" className={styles.breadcrumb}>
         <ol>
           <li>
             <Link href="/">Inicio</Link>
@@ -120,13 +132,20 @@ export function DetailPage() {
         </ol>
       </nav>
 
-      <header className="job-detail-header">
+      {/* Volver a donde estabas, conservando los filtros de la búsqueda.
+          Un <Link href="/search"> te llevaría a la búsqueda vacía; goBack()
+          te devuelve a la página exacta del historial. */}
+      <button className={styles.backButton} onClick={goBack}>
+        ← Volver
+      </button>
+
+      <header className={styles.header}>
         <h1>{job.titulo}</h1>
-        <p className="job-detail-company">
+        <p className={styles.company}>
           {job.empresa} · {job.ubicacion}
         </p>
 
-        <ul className="job-detail-tags">
+        <ul className={styles.tags}>
           <li>{job.data.modalidad}</li>
           <li>{job.data.nivel}</li>
           {/* technology es un ARRAY en esta API, así que lo recorremos */}
@@ -138,7 +157,7 @@ export function DetailPage() {
         {/* Solo se puede aplicar con la sesión iniciada. `disabled` bloquea el
             botón de verdad (también para teclado y lectores de pantalla),
             que es mejor que esconderlo o taparlo con CSS. */}
-        <div className="job-detail-actions">
+        <div className={styles.actions}>
           <button className="button-apply-job" disabled={!isLoggedIn}>
             {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
           </button>
@@ -153,7 +172,16 @@ export function DetailPage() {
       <JobSection title="Descripción del puesto" content={job.content?.description} />
       <JobSection title="Responsabilidades" content={job.content?.responsibilities} />
       <JobSection title="Requisitos" content={job.content?.requirements} />
-      <JobSection title="Sobre la empresa" content={job.content?.about} />
+      <JobSection title="Acerca de la empresa" content={job.content?.about} />
+
+      {/* El diseño de referencia repite la llamada a la acción al final:
+          después de leerse toda la oferta, el botón está a mano sin tener
+          que volver a subir. */}
+      <div className={styles.footerCta}>
+        <button className="button-apply-job" disabled={!isLoggedIn}>
+          {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
+        </button>
+      </div>
     </main>
   )
 }
