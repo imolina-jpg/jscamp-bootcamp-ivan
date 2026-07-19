@@ -488,6 +488,12 @@ article {
     color: var(--primary-light);
     font-weight: 600;
 
+    /* Si ya estás en esta página, volver a pulsar el enlace no hace nada
+       útil. pointer-events: none desactiva el clic, y user-select evita
+       que se seleccione el texto al intentarlo. */
+    pointer-events: none;
+    user-select: none;
+
     /* Subrayado con ::after en vez de text-decoration para poder separarlo
        del texto y darle color propio. */
     &::after {
