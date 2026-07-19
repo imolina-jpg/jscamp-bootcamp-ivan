@@ -1,6 +1,31 @@
+// SÉPTIMA PARTE | Página de inicio con formulario funcional.
+//
+// Al buscar desde aquí NO filtramos nada: simplemente redirigimos a /search
+// con el texto en los search params. La página Search ya sabe leerlos y hacer
+// el resto. Cada página tiene una responsabilidad clara.
+import { useRouter } from '../hooks/useRouter'
+
 export function HomePage() {
+  const { navigateTo } = useRouter()
+
+  const handleSubmit = (event) => {
+    // Sin esto, el navegador recargaría la página al enviar el formulario.
+    event.preventDefault()
+
+    // FormData lee todos los campos del formulario de golpe. event.target es el
+    // <form>, y usamos el atributo name del input ("search") para leer su valor.
+    const formData = new FormData(event.target)
+    const text = formData.get('search').trim()
+
+    // encodeURIComponent escapa espacios y acentos para que la URL sea válida
+    // (ej. "node js" → "node%20js").
+    navigateTo(`/search?text=${encodeURIComponent(text)}`)
+  }
+
   return (
     <main>
+      <title>DevJobs | Encuentra el trabajo de tus sueños</title>
+
       <section>
         <img src="./background.webp" width="200" />
 
@@ -10,7 +35,7 @@ export function HomePage() {
           Únete a la comunidad más grande de desarrolladores y encuentra tu próxima oportunidad.
         </p>
 
-        <form role="search">
+        <form role="search" onSubmit={handleSubmit}>
           <div>
             <svg
               width="24"
