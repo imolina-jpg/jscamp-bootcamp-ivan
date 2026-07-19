@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React - JobCard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="module">
+      import React from 'https://esm.sh/react?dev'
+      import ReactDOM from 'https://esm.sh/react-dom/client?dev'
+      window.React = React
+      window.ReactDOMClient = ReactDOM
+    </script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      // Componente JobCard con múltiples props
+      
+      function JobCard({ titulo, empresa, ubicacion, descripcion }) {
+  // ¡NOVEDAD! Estado: ¿el usuario aplicó a este empleo?
+  const [aplicado, setAplicado] = React.useState(false)
+
+  const handleAplicar = () => {
+    setAplicado(true) // Cambiamos el estado a true
+  }
+
+  return (
+    <article className="job-listing-card">
+      <div>
+        <h3>{titulo}</h3>
+        <small>
+          {empresa} | {ubicacion}
+        </small>
+        <p>{descripcion}</p>
+      </div>
+      <button
+        className={aplicado ? 'button-apply-job is-applied' : 'button-apply-job'}
+        onClick={handleAplicar}
+        disabled={aplicado}
+      >
+        {aplicado ? '¡Aplicado!' : 'Aplicar'}
+      </button>
+    </article>
+  )
+}
+
+
+
+      // Componente App
+      function App() {
+        return (
+          <section>
+            <h2>Empleos disponibles</h2>
+            <div className="jobs-listings">
+              <JobCard
+                titulo="Desarrollador Frontend"
+                empresa="Tech Solutions Inc."
+                ubicacion="Remoto"
+                descripcion="Buscamos un desarrollador frontend con experiencia en React, TypeScript y Tailwind CSS."
+                data={{modalidad: "Remoto", nivel: "Junior", tecnologias: "React"}}
+                />
+              <JobCard
+                titulo="Ingeniero de Software Senior"
+                empresa="Data Driven Co."
+                ubicacion="Ciudad de México"
+                descripcion="Estamos buscando un ingeniero de software con experiencia en desarrollo web."
+                data={{modalidad: "Presencial", nivel: "Senior", tecnologias: "JavaScript, Python"}}
+              />
+            </div>
+          </section>
+        )
+      }
+
+      // Renderizar
+      window.onload = () => {
+        const rootEl = document.querySelector('#root')
+        const root = ReactDOMClient.createRoot(rootEl)
+        root.render(<App />)
+      }
+    </script>
+  </body>
+</html>

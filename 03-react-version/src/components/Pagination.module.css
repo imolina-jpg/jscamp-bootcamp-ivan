@@ -1,0 +1,40 @@
+/* CSS MODULE de Pagination.
+   Al llamar al archivo "Pagination.module.css", Vite trata estas clases como
+   LOCALES: por dentro renombra ".pagination" a algo único (ej. "Pagination_pagination_x7f2")
+   para que NUNCA choque con un ".pagination" de otro componente. Importamos las
+   clases como un objeto "styles" y las usamos con styles.nombreDeLaClase. */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-block: 2rem;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    border-radius: 0.375rem;
+    transition: all 0.3s;
+
+    &:hover,
+    &:focus {
+      background-color: #fff;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
+
+/* En CSS Modules es habitual escribir las clases en camelCase (isActive) porque
+   luego se acceden como styles.isActive desde JavaScript. */
+.isActive {
+  background-color: var(--primary-light);
+  color: white;
+  pointer-events: none;
+}
