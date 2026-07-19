@@ -72,7 +72,13 @@ export function Header() {
             {/* Renderizado condicional con &&: si el contador es 0 no se
                 pinta nada (0 es "falsy", pero ojo: React SÍ pintaría un 0
                 suelto, por eso comparamos con > 0). */}
-            {favoritesCount > 0 && <span className="favorites-badge">{favoritesCount}</span>}
+            {favoritesCount > 0 && (
+              <span className="favorites-badge">
+                {/* aria-hidden porque el corazón es decorativo: el lector de
+                    pantalla ya lee el número y "Mi perfil". */}
+                <span aria-hidden="true">♥</span> {favoritesCount}
+              </span>
+            )}
           </NavLink>
         )}
 

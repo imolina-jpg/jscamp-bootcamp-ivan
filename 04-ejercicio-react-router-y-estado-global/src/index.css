@@ -555,6 +555,11 @@ article {
     border-color: #f5b301;
     color: #f5b301;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 /* ---------- Estilos de "prosa" ----------

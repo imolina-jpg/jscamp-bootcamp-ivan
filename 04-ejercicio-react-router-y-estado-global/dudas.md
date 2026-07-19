@@ -77,6 +77,17 @@
 
 ## Sexta parte
 
+- **Hueco reconocido (lección 12).** La clase pide montar el prop drilling a
+  propósito: estado `isLoggedIn` en `App.jsx`, bajarlo por props a `Header` y
+  al detalle, trocear la página de detalle en subcomponentes y observar con
+  React DevTools cómo se re-renderiza media app al iniciar sesión. **Ese paso
+  no se hizo**: se saltó directamente a Context y de ahí a Zustand.
+  Lo permanente de la clase sí está (botón de iniciar/cerrar sesión y botón de
+  aplicar deshabilitado sin sesión, con los textos de la lección), pero la
+  experiencia de "sufrir" el problema se perdió. Rehacerlo ahora obligaría a
+  revertir Zustand, así que se deja documentado. **Duda:** ¿merece la pena
+  reproducirlo en una rama aparte solo para verlo con las DevTools?
+
 - ESLint daba error al poner el Provider y el hook `useAuth` en el mismo
   archivo (`react-refresh/only-export-components`). Lo resolvimos separando el
   contexto y el hook en `useAuth.js` y dejando solo el componente en
