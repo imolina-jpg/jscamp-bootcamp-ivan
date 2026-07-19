@@ -1,39 +1,21 @@
-import { useId, useState, useRef } from 'react'
+import { useId, useRef } from 'react'
 
-const useSearchForm = ({
-  idTechnology,
-  idLocation,
-  idExperienceLevel,
-  idText,
-  onSearch,
-  onTextFilter,
-}) => {
+/**
+ * Custom hook con la lógica del buscador de texto.
+ *
+ * Debounce: en vez de buscar en cada tecla, esperamos 500 ms desde la última
+ * pulsación. Si el usuario sigue escribiendo, cancelamos el temporizador
+ * anterior y arrancamos otro. Así escribir "javascript" hace 1 petición y no 10.
+ */
+const useSearchForm = ({ onTextFilter }) => {
+  // useRef guarda el id del temporizador ENTRE renders sin provocar re-renders.
+  // Una variable normal se perdería en cada render; un useState causaría un
+  // render extra inútil.
   const timeoutId = useRef(null)
-  const [searchText, setSearchText] = useState('')
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    const formData = new FormData(event.currentTarget)
-
-    if (event.target.name === idText) {
-      return // ya lo manejamos en onChange
-    }
-
-    const filters = {
-      technology: formData.get(idTechnology),
-      location: formData.get(idLocation),
-      experienceLevel: formData.get(idExperienceLevel),
-    }
-
-    onSearch(filters)
-  }
 
   const handleTextChange = (event) => {
     const text = event.target.value
-    setSearchText(text) // actualizamos el input inmediatamente
 
-    // Debounce: Cancelar el timeout anterior
     if (timeoutId.current) {
       clearTimeout(timeoutId.current)
     }
@@ -43,14 +25,10 @@ const useSearchForm = ({
     }, 500)
   }
 
-  return {
-    searchText,
-    handleSubmit,
-    handleTextChange,
-  }
+  return { handleTextChange }
 }
 
-export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
+export function SearchFormSection({ onTextFilter, onFilterChange, filters, initialText }) {
   const idText = useId()
   const idTechnology = useId()
   const idLocation = useId()
@@ -58,14 +36,7 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
 
   const inputRef = useRef()
 
-  const { handleSubmit, handleTextChange } = useSearchForm({
-    idTechnology,
-    idLocation,
-    idExperienceLevel,
-    idText,
-    onSearch,
-    onTextFilter,
-  })
+  const { handleTextChange } = useSearchForm({ onTextFilter })
 
   const handleClearInput = (event) => {
     event.preventDefault()
@@ -74,12 +45,17 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
     onTextFilter('')
   }
 
+  // Un único manejador para los tres selects: el `name` nos dice cuál cambió.
+  const handleSelectChange = (event) => {
+    onFilterChange(event.target.name, event.target.value)
+  }
+
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form onChange={handleSubmit} id="empleos-search-form" role="search">
+      <form id="empleos-search-form" role="search" onSubmit={(event) => event.preventDefault()}>
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,21 +74,41 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             <path d="M21 21l-6 -6" />
           </svg>
 
+          <label htmlFor={idText} className="sr-only">
+            Buscar empleos
+          </label>
+
+          {/* Este input va SIN controlar (defaultValue en vez de value) a
+              propósito: con el debounce, la URL se actualiza medio segundo
+              después de escribir, y si el input dependiera de ella daría saltos
+              raros mientras escribes. Solo lee el valor inicial de la URL. */}
           <input
             ref={inputRef}
-            name={idText}
-            id="empleos-search-input"
+            id={idText}
             type="text"
             placeholder="Buscar trabajos, empresas o habilidades"
             onChange={handleTextChange}
             defaultValue={initialText}
           />
 
-          <button onClick={handleClearInput}>✖︎</button>
+          <button type="button" onClick={handleClearInput} aria-label="Limpiar búsqueda">
+            ✖︎
+          </button>
         </div>
 
         <div className="search-filters">
-          <select name={idTechnology} id="filter-technology">
+          {/* Los selects SÍ van controlados: su `value` sale de la URL.
+              Esto es lo que hace que al recargar /search?technology=react
+              el desplegable siga mostrando "React" seleccionado. */}
+          <label htmlFor={idTechnology} className="sr-only">
+            Filtrar por tecnología
+          </label>
+          <select
+            name="technology"
+            id={idTechnology}
+            value={filters.technology}
+            onChange={handleSelectChange}
+          >
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
               <option value="javascript">JavaScript</option>
@@ -130,7 +126,15 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             <option value="php">PHP</option>
           </select>
 
-          <select name={idLocation} id="filter-location">
+          <label htmlFor={idLocation} className="sr-only">
+            Filtrar por ubicación
+          </label>
+          <select
+            name="location"
+            id={idLocation}
+            value={filters.location}
+            onChange={handleSelectChange}
+          >
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
             <option value="cdmx">Ciudad de México</option>
@@ -139,7 +143,15 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
             <option value="barcelona">Barcelona</option>
           </select>
 
-          <select name={idExperienceLevel} id="filter-experience-level">
+          <label htmlFor={idExperienceLevel} className="sr-only">
+            Filtrar por nivel de experiencia
+          </label>
+          <select
+            name="experienceLevel"
+            id={idExperienceLevel}
+            value={filters.experienceLevel}
+            onChange={handleSelectChange}
+          >
             <option value="">Nivel de experiencia</option>
             <option value="junior">Junior</option>
             <option value="mid">Mid-level</option>
@@ -148,8 +160,6 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
           </select>
         </div>
       </form>
-
-      <span id="filter-selected-value"></span>
     </section>
   )
 }

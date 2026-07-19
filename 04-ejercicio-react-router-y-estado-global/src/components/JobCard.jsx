@@ -1,5 +1,8 @@
 import { useState } from 'react'
 
+import { Link } from './Link.jsx'
+import { FavoriteButton } from './FavoriteButton.jsx'
+
 export function JobCard({ job }) {
   const [isApplied, setIsApplied] = useState(false)
 
@@ -17,16 +20,28 @@ export function JobCard({ job }) {
       data-nivel={job.data.nivel}
       data-technology={job.data.technology}
     >
-      <div>
+      {/* Enlazamos SOLO el bloque de texto, no la tarjeta entera.
+          Motivo: meter un <button> dentro de un <a> es HTML inválido y rompe
+          la accesibilidad (el navegador no sabe qué acción quieres al pulsar).
+          Así el botón "Aplicar" sigue siendo un hermano independiente y
+          funciona exactamente igual que antes. */}
+      <Link href={`/job/${job.id}`} className="job-card-link">
         <h3>{job.titulo}</h3>
         <small>
           {job.empresa} | {job.ubicacion}
         </small>
         <p>{job.descripcion}</p>
+      </Link>
+
+      <div className="job-card-actions">
+        <button className={buttonClasses} onClick={handleApplyClick}>
+          {buttonText}
+        </button>
+
+        {/* JobCard no sabe nada de favoritos: solo le pasa el id.
+            Toda la lógica (y la suscripción a la store) vive dentro. */}
+        <FavoriteButton jobId={job.id} />
       </div>
-      <button className={buttonClasses} onClick={handleApplyClick}>
-        {buttonText}
-      </button>
     </article>
   )
 }

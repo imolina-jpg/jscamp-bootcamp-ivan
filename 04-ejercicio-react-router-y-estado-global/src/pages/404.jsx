@@ -1,3 +1,7 @@
+// Doble exportación a propósito:
+// - `export function` (nombrada) para quien quiera importarla normal.
+// - `export default` al final, porque React.lazy() SOLO sabe cargar el
+//   export por defecto de un módulo.
 export function NotFoundPage () {
   return (
     <main>
@@ -6,3 +10,5 @@ export function NotFoundPage () {
     </main>
   )
 }
+
+export default NotFoundPage
