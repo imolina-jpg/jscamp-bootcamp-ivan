@@ -1,0 +1,12 @@
+# Las dependencias no se suben al repo: se reinstalan con `npm install`
+# a partir del package.json y el package-lock.json.
+node_modules/
+
+# Salidas que genera Playwright al ejecutar los tests
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Variables de entorno locales
+.env
