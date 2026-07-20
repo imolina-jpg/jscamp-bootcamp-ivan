@@ -1,12 +1,13 @@
-import { useFavoritesStore } from '../store/favoritesStore.js'
 import { useAuthStore } from '../store/authStore.js'
+import { useFavoritesStore } from '../store/favoritesStore.js'
 
 // Botón aparte para que al marcar un favorito solo se repinte él y no la
 // tarjeta entera.
 export function FavoriteButton({ jobId }) {
   // Hay que suscribirse al dato, no a la función isFavorite: su referencia
   // nunca cambia y el botón no se enteraría.
-  const isFavorite = useFavoritesStore((state) => state.favorites.includes(jobId))
+  // MATEO: Lo que no se recomienda es hacer `const { isFavorite } = useFavoritesStore()`, pero llamar a isFavorite() dentro si que se puede hacer
+  const isFavorite = useFavoritesStore((state) => state.isFavorite(jobId))
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite)
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
