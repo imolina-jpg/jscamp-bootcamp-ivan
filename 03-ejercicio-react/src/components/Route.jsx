@@ -7,42 +7,40 @@
 // y es el propio Route quien decide si le toca aparecer o no.
 import { useRouter } from '../hooks/useRouter'
 
+// MEJORA (feedback de Mateo): antes App.jsx tenía una lista KNOWN_PATHS escrita
+// a mano para saber cuándo mostrar el 404. El problema es que había que acordarse
+// de añadir cada página nueva en DOS sitios: su <Route> y esa lista.
+//
+// Ahora las rutas se registran SOLAS aquí. Este Set vive FUERA del componente:
+// como esto es una SPA, el módulo se carga una única vez y el Set sobrevive
+// aunque naveguemos entre páginas (no se borra en cada render).
+const availablePaths = new Set()
+
 // Props:
-//   - path: la ruta que le corresponde a este Route (ej. "/search")
+//   - path: la ruta que le corresponde a este Route (ej. "/search").
+//           Si NO se pasa, este Route es el "comodín": el que se pinta cuando
+//           ninguna otra ruta coincide (nuestro 404).
 //   - component: el componente que hay que pintar (la función, sin ejecutar).
+//
 export function Route({ path, component }) {
   const { currentPath } = useRouter()
-
-  // Si la URL actual no es la de este Route, no pintamos nada.
-  // Devolver null en React significa "no renderices nada aquí".
-  if (currentPath !== path) return null
 
   // Guardamos la prop en una variable con MAYÚSCULA inicial. Es obligatorio:
   // JSX trata los nombres en minúscula como etiquetas HTML, así que <component />
   // intentaría crear una etiqueta llamada "component" en vez de usar el componente.
   const Component = component
 
+  // Cada vez que se renderiza un Route con path, lo apuntamos como ruta conocida.
+  // Set ignora los duplicados, así que da igual que esto pase en cada render.
+  if (path) availablePaths.add(path)
+
+  // Route comodín (sin path): solo se pinta si la URL actual NO es ninguna de
+  // las rutas registradas. Es decir: aquí es donde aparece el 404.
+  if (!path) return availablePaths.has(currentPath) ? null : <Component />
+
+  // Route normal: si la URL actual no es la suya, no pinta nada.
+  // Devolver null en React significa "no renderices nada aquí".
+  if (currentPath !== path) return null
+
   return <Component />
-}
-
-
-/* 1. Creamos el objeto fuera del componente, como tenemos una SPA, el objeto se creará una sola vez y no se destruirá aunque naveguemos entre páginas. */
-const availablePaths = new Set();
-
-// eslint-disable-next-line
-export function Route2({ path, component: Component }) {
-  const { currentPath } = useRouter();
-
-  /* 2. Cada vez que se llame el componente, lo guardamos en el objeto */
-  if (path) {
-    availablePaths.add(path);
-  }
-
-  /* 3. Si no hay path y la ruta actual no está registrada, cargamos el componente que le pasemos, en este caso el 404 porque se envía sin path */
-  if (!path && !availablePaths.has(currentPath)) return <Component />;
-
-  /* 4. Si la ruta actual no coincide con el path, no renderizamos nada */
-  if (currentPath !== path) return null;
-
-  return <Component />;
 }

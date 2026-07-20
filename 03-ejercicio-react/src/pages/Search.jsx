@@ -15,6 +15,7 @@
 // Y el filtrado y la paginación tampoco los hacemos aquí: se los PEDIMOS a la
 // API por search params. Así el navegador solo descarga los 5 empleos que va a
 // mostrar, en vez de los 34 enteros para tirar 29 a la basura.
+import { useMemo } from 'react'
 import { SearchFormSection } from '../components/SearchFormSection'
 import { SearchResultsSection } from '../components/SearchResultsSection'
 import { Spinner } from '../components/Spinner'
@@ -76,20 +77,36 @@ export function SearchPage() {
   // no son los mismos que los nuestros, así que los traducimos:
   //   nuestro "location"   → API "type"
   //   nuestro "experience" → API "level"
-  const apiParams = new URLSearchParams()
-  // NOTA: En vez de usar una una variable que se actualiza en cada render, lo mejor es guardar esto en un useState
-  // NOTA: Lo dejo como tarea
-  if (filters.text) apiParams.set('text', filters.text)
-  if (filters.technology) apiParams.set('technology', filters.technology)
-  if (filters.location) apiParams.set('type', filters.location)
-  if (filters.experience) apiParams.set('level', filters.experience)
+  //
+  // TAREA DE MATEO: antes esto se recalculaba entero en CADA render, aunque no
+  // hubiera cambiado nada. La solución es MEMORIZARLO con useMemo: React guarda
+  // el resultado y solo vuelve a ejecutar la función cuando cambia algo del
+  // array de dependencias (los filtros o la página).
+  //
+  // ¿Por qué useMemo y no useState? Porque esto NO es estado propio: es un valor
+  // DERIVADO de la URL, que ya es nuestra fuente de la verdad. Si lo metiéramos
+  // en useState tendríamos el dato duplicado en dos sitios y haría falta un
+  // useEffect para mantenerlos sincronizados... que es justo el error que la
+  // documentación de React llama "estado redundante". useMemo evita el recálculo
+  // sin duplicar nada.
+  const apiUrl = useMemo(() => {
+    const apiParams = new URLSearchParams()
 
-  // limit = cuántos queremos; offset = desde cuál empezar.
-  // Página 1 → offset 0; página 2 → offset 5; página 3 → offset 10...
-  apiParams.set('limit', String(RESULTS_PER_PAGE))
-  apiParams.set('offset', String((currentPage - 1) * RESULTS_PER_PAGE))
+    if (filters.text) apiParams.set('text', filters.text)
+    if (filters.technology) apiParams.set('technology', filters.technology)
+    if (filters.location) apiParams.set('type', filters.location)
+    if (filters.experience) apiParams.set('level', filters.experience)
 
-  const apiUrl = `${API_URL}?${apiParams.toString()}`
+    // limit = cuántos queremos; offset = desde cuál empezar.
+    // Página 1 → offset 0; página 2 → offset 5; página 3 → offset 10...
+    apiParams.set('limit', String(RESULTS_PER_PAGE))
+    apiParams.set('offset', String((currentPage - 1) * RESULTS_PER_PAGE))
+
+    return `${API_URL}?${apiParams.toString()}`
+    // Dependencias: listamos los valores sueltos y no el objeto `filters` entero
+    // porque ese objeto se crea nuevo en cada render, así que useMemo pensaría
+    // siempre que ha cambiado y no serviría de nada.
+  }, [filters.text, filters.technology, filters.location, filters.experience, currentPage])
 
   // Una sola línea para pedir los datos, gracias al custom hook.
   // Como apiUrl cambia al cambiar cualquier filtro o página, useFetch vuelve a
