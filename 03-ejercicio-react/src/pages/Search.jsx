@@ -18,8 +18,8 @@
 import { SearchFormSection } from '../components/SearchFormSection'
 import { SearchResultsSection } from '../components/SearchResultsSection'
 import { Spinner } from '../components/Spinner'
-import { useRouter } from '../hooks/useRouter'
 import { useFetch } from '../hooks/useFetch'
+import { useRouter } from '../hooks/useRouter'
 
 const API_URL = 'https://jscamp-api.vercel.app/api/jobs'
 
@@ -77,6 +77,8 @@ export function SearchPage() {
   //   nuestro "location"   → API "type"
   //   nuestro "experience" → API "level"
   const apiParams = new URLSearchParams()
+  // NOTA: En vez de usar una una variable que se actualiza en cada render, lo mejor es guardar esto en un useState
+  // NOTA: Lo dejo como tarea
   if (filters.text) apiParams.set('text', filters.text)
   if (filters.technology) apiParams.set('technology', filters.technology)
   if (filters.location) apiParams.set('type', filters.location)
