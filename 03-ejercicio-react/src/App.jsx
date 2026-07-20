@@ -5,16 +5,18 @@
 //
 // Header y Footer están FUERA de las rutas porque se ven siempre, en todas las
 // páginas. Lo que cambia es únicamente lo de en medio.
-import { Header } from './components/Header'
 import { Footer } from './components/Footer'
+import { Header } from './components/Header'
 import { Route } from './components/Route'
+import { useRouter } from './hooks/useRouter'
+import { NotFoundPage } from './pages/404'
 import { HomePage } from './pages/Home'
 import { SearchPage } from './pages/Search'
-import { NotFoundPage } from './pages/404'
-import { useRouter } from './hooks/useRouter'
 
 // Lista de rutas que SÍ existen. Nos sirve para detectar cuándo hay que
 // mostrar el 404: si la ruta actual no está en esta lista, es que no existe.
+
+// NOTA: Bien! Es una buena manera de implementarlo, lo negativo es que cada vez que tengamos que agregar una página, tenemos que registrarla en el arreglo. Hay una manera de hacerlo desde `Route` que te la voy a dejar en el componente. 
 const KNOWN_PATHS = ['/', '/search']
 
 function App() {
@@ -33,6 +35,12 @@ function App() {
       {/* 404: no lo ponemos como <Route> porque no tiene una ruta fija;
           aparece con CUALQUIER ruta desconocida. */}
       {!isKnownPath && <NotFoundPage />}
+
+      {/* NOTA: Pasamos el NotFoundPage como prop sin path, para saber que es cuando no hay coincidencia */}
+      {/* Lo dejo comentado para que lo pruebes */}
+      {/* <Route path="/" component={HomePage} />
+      <Route path="/search" component={SearchPage} />
+      <Route component={NotFoundPage} /> */}
 
       <Footer />
     </>
