@@ -9,9 +9,10 @@
   devolver directamente el `navigate` de React Router en vez de envolverlo,
   o merece la pena mantener el envoltorio por si algún día cambiamos de router?
 
-- Las lecciones importan de `react-router-dom` en algunos ejemplos y de
-  `react-router` en otros. Con la versión actual (v7+) todo sale de
-  `react-router`. ¿`react-router-dom` está oficialmente deprecado?
+- En unas lecciones importan de `react-router-dom` y en otras de `react-router`
+  a secas, y me hice un lío. Al final lo he dejado en `react-router` porque es
+  así como me funcionaba con la versión que tengo instalada, pero no sé si
+  `react-router-dom` ya no se usa o es que da igual cuál de los dos pongas.
 
 ## Segunda parte
 
@@ -25,10 +26,10 @@
   la lección 6. **Duda:** si se quiere que TODA la tarjeta sea clicable,
   ¿la forma correcta es el truco del "stretched link" con `position: absolute`?
 
-- La lección 5 da por hecho que el andamio trae un `detail.module.css` "con
-  todos los estilos preparados", pero en el ejercicio no viene. Los hemos
-  escrito desde cero en `src/pages/Detail.module.css`. **Duda:** ¿era ese
-  archivo parte del material y se nos ha pasado descargarlo?
+- En la lección 5 dicen que ya viene un `detail.module.css` con los estilos
+  hechos, pero yo no lo encuentro por ningún lado. Al final me los he escrito
+  yo enteros en `src/pages/Detail.module.css` y me llevó un buen rato. ¿Ese
+  archivo tenía que estar ahí y se me ha pasado bajarlo de algún sitio?
 
 - No hemos podido hacer la comparación "pixel por pixel" que pide la lección 7:
   el proyecto de Stitch solo deja ver miniaturas al 17% y no permite ampliar
@@ -88,11 +89,11 @@
   revertir Zustand, así que se deja documentado. **Duda:** ¿merece la pena
   reproducirlo en una rama aparte solo para verlo con las DevTools?
 
-- ESLint daba error al poner el Provider y el hook `useAuth` en el mismo
-  archivo (`react-refresh/only-export-components`). Lo resolvimos separando el
-  contexto y el hook en `useAuth.js` y dejando solo el componente en
-  `authContext.jsx`. **Duda:** ¿es esa la convención habitual o la gente
-  simplemente desactiva la regla?
+- Me saltaba un error de ESLint (`react-refresh/only-export-components`) por
+  tener el Provider y el hook `useAuth` en el mismo archivo. Lo arreglé
+  separándolos en dos, `useAuth.js` y `authContext.jsx`, y así ya no se queja.
+  Pero no sé si eso es lo que se suele hacer normalmente o si la gente
+  directamente quita esa regla y ya está.
 
 - El estado de sesión y los favoritos se pierden al recargar la página, porque
   Zustand guarda en memoria. Sabemos que existe el middleware `persist` para
