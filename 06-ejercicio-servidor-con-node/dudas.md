@@ -40,9 +40,6 @@ pero se lee fatal. Lo he movido arriba, antes del `createServer`.
 
 ### 4. Cosas que he añadido por mi cuenta
 
-- **405 Method Not Allowed**: si la ruta existe pero el método no está permitido
-  (ej. `DELETE /users`), devolver 404 sería mentir, porque la URL sí es válida.
-  Lo aprendí en la clase C14.
 - **Validación del body en el POST**: si `name` o `age` no vienen o son del tipo
   equivocado, devuelvo 400. La clase C15 insiste en no fiarse del cliente.
 - **Helper `sendJSON()`**: para no repetir `statusCode` + `setHeader` +

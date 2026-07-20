@@ -27,11 +27,6 @@ app.use(express.json())
 // consumir esta API. Ver middlewares/cors.js.
 app.use(corsMiddleware())
 
-// Express manda una cabecera "X-Powered-By: Express" en cada respuesta.
-// Quitarla es una buena práctica de seguridad: no hace falta ir anunciando
-// con qué está hecho el servidor.
-app.disable('x-powered-by')
-
 // --- Rutas ------------------------------------------------------------------
 // Todo lo que empiece por /jobs se lo pasamos al router correspondiente.
 // Si mañana añadimos usuarios, sería otra línea igual: app.use('/users', ...)
@@ -44,16 +39,11 @@ app.use((req, res) => {
 })
 
 // --- Arranque ---------------------------------------------------------------
-// En producción (Vercel), la app corre como una función serverless: es la
-// plataforma quien la levanta, y llamar a app.listen() daría problemas.
-// Por eso solo escuchamos cuando NO estamos en producción.
+// El puerto sale de config.js, pero dejamos que una variable de entorno lo
+// pise: en local mandamos nosotros, y en un hosting el puerto lo asigna la
+// plataforma.
 const PORT = process.env.PORT ?? DEFAULTS.PORT
 
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Servidor levantado en http://localhost:${PORT}`)
-  })
-}
-
-// Vercel necesita la app exportada para poder manejar las peticiones.
-export default app
+app.listen(PORT, () => {
+  console.log(`Servidor levantado en http://localhost:${PORT}`)
+})

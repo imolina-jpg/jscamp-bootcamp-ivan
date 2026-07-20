@@ -226,16 +226,6 @@ const server = createServer(async (req, res) => {
   }
 
   // -------------------------------------------------------------------------
-  // 405 Method Not Allowed
-  // -------------------------------------------------------------------------
-  // Caso intermedio entre "existe" y "no existe": la ruta SÍ existe, pero no
-  // acepta ese verbo (por ejemplo, DELETE /users). Decir 404 aquí sería
-  // mentir, porque la URL es correcta.
-  if (pathname === '/users' || pathname === '/health') {
-    return sendJSON(res, 405, { error: `El método ${method} no está permitido en ${pathname}` })
-  }
-
-  // -------------------------------------------------------------------------
   // 404 Ruta no encontrada  (cuarto ejercicio)
   // -------------------------------------------------------------------------
   // Si la petición llega hasta aquí es que no ha coincidido con nada.
