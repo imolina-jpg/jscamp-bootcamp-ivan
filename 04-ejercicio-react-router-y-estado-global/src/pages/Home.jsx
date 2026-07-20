@@ -18,7 +18,11 @@ export function HomePage () {
   return (
     <main>
       <section>
-        <img src="./background.webp" width="200" />
+        {/* Ruta absoluta (empieza por "/"), no "./": los archivos de `public`
+            se sirven desde la raíz del sitio. Con "./" el navegador la
+            resolvería relativa a la URL actual y en /jobs/123 buscaría la
+            imagen en /jobs/background.webp. */}
+        <img src="/background.webp" width="200" alt="" />
 
         <h1>Encuentra el trabajo de tus sueños</h1>
 
