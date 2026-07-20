@@ -16,6 +16,13 @@
 const listContainer = document.querySelector('.jobs-listings')
 
 /*
+  Este Set guarda los IDs de los empleos a los que ya hemos aplicado.
+  Lo compartimos con apply-button.js para que, aunque se vuelva a pintar la
+  lista al filtrar, los botones recuerden su estado "¡Aplicado!".
+*/
+export const appliedJobs = new Set()
+
+/*
   Guardamos aquí la promesa del fetch la primera vez que se llama a getJobs().
   ¿Por qué? Porque `fetch-data.js` y `filters.js` necesitan los mismos datos.
   Si no guardáramos nada, cada uno haría su propia petición al servidor y
@@ -66,17 +73,31 @@ export function renderJobs(jobs) {
     const li = document.createElement('li')
 
     /*
+      Miramos si este empleo ya estaba aplicado ANTES de pintarlo.
+      Si está en el Set, el botón nace directamente en estado "¡Aplicado!".
+    */
+    const isApplied = appliedJobs.has(job.id)
+
+    /*
       El HTML de cada tarjeta nos lo daba el enunciado. Usamos `template literals`
       (las comillas invertidas ` `) para poder insertar variables con ${...}.
+
+      Añadimos data-job-id al <article> para identificar el empleo desde
+      apply-button.js aunque el DOM se haya rehecho.
+
+      Si ya estaba aplicado, el botón se renderiza con el texto "¡Aplicado!",
+      la clase "is-applied" y el atributo disabled.
     */
     li.innerHTML = `
-      <article class="job-listing-card">
+      <article class="job-listing-card" data-job-id="${job.id}">
         <div>
           <h3>${job.titulo}</h3>
           <small>${job.empresa} | ${job.ubicacion}</small>
           <p>${job.descripcion}</p>
         </div>
-        <button class="button-apply-job">Aplicar</button>
+        <button class="button-apply-job${isApplied ? ' is-applied' : ''}" ${isApplied ? 'disabled' : ''}>
+          ${isApplied ? '¡Aplicado!' : 'Aplicar'}
+        </button>
       </article>
     `
 
