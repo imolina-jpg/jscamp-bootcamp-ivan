@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router'
 
-import { Link } from './Link.jsx'
 import { useAuthStore } from '../store/authStore.js'
 import { useFavoritesStore } from '../store/favoritesStore.js'
+import { Link } from './Link.jsx'
 
 export function Header() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
@@ -10,6 +10,37 @@ export function Header() {
   const logout = useAuthStore((state) => state.logout)
 
   const favoritesCount = useFavoritesStore((state) => state.favorites.length)
+
+  // MATEO: Pasamos los links a un arreglo y lo mapeamos en el `nav`. Más
+  // limpio y mantenible que repetir el mismo NavLink tres veces. Filtramos
+  // con `filter(Boolean)` para que el link de perfil desaparezca entero
+  // cuando no hay sesión.
+  const navLinksContent = [
+    {
+      to: "/",
+      content: "Inicio",
+      // sin `end`, "/" encaja con todas las rutas e "Inicio" sale siempre activo
+      end: true,
+    },
+    {
+      to: "/search",
+      content: "Empleos",
+    },
+    isLoggedIn && {
+      to: "/profile",
+      content: (
+        <>
+          Mi perfil
+          {/* comparo con > 0 porque si no React pinta un 0 suelto */}
+          {favoritesCount > 0 && (
+            <span className="favorites-badge">
+              <span aria-hidden="true">♥</span> {favoritesCount}
+            </span>
+          )}
+        </>
+      ),
+    },
+  ].filter(Boolean)
 
   return (
     <header>
@@ -32,36 +63,17 @@ export function Header() {
       </Link>
 
       <nav>
-        <NavLink
-          to="/"
-          /* sin `end`, "/" encaja con todas las rutas y Inicio sale siempre activo */
-          end
-          className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
-        >
-          Inicio
-        </NavLink>
-
-        <NavLink
-          to="/search"
-          className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
-        >
-          Empleos
-        </NavLink>
-
-        {isLoggedIn && (
-          <NavLink
-            to="/profile"
+        {
+          navLinksContent.map(({ content, to, ...props }) => <NavLink
+            to={to}
+            /* sin `end`, "/" encaja con todas las rutas y Inicio sale siempre activo */
             className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
-          >
-            Mi perfil
-            {/* comparo con > 0 porque si no React pinta un 0 suelto */}
-            {favoritesCount > 0 && (
-              <span className="favorites-badge">
-                <span aria-hidden="true">♥</span> {favoritesCount}
-              </span>
-            )}
-          </NavLink>
-        )}
+            {...props}
+            >
+              {content}
+            </NavLink>
+          )
+        }
 
         <button className="button-login" onClick={isLoggedIn ? logout : login}>
           {isLoggedIn ? 'Cerrar sesión' : 'Iniciar sesión'}
