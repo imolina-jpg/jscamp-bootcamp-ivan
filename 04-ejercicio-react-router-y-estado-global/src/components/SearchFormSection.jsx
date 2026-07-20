@@ -1,16 +1,8 @@
 import { useId, useRef } from 'react'
 
-/**
- * Custom hook con la lógica del buscador de texto.
- *
- * Debounce: en vez de buscar en cada tecla, esperamos 500 ms desde la última
- * pulsación. Si el usuario sigue escribiendo, cancelamos el temporizador
- * anterior y arrancamos otro. Así escribir "javascript" hace 1 petición y no 10.
- */
+// Debounce de 500 ms: así escribir "javascript" hace 1 petición y no 10.
 const useSearchForm = ({ onTextFilter }) => {
-  // useRef guarda el id del temporizador ENTRE renders sin provocar re-renders.
-  // Una variable normal se perdería en cada render; un useState causaría un
-  // render extra inútil.
+  // useRef para guardar el temporizador entre renders sin provocar re-renders.
   const timeoutId = useRef(null)
 
   const handleTextChange = (event) => {
@@ -45,7 +37,7 @@ export function SearchFormSection({ onTextFilter, onFilterChange, filters, initi
     onTextFilter('')
   }
 
-  // Un único manejador para los tres selects: el `name` nos dice cuál cambió.
+  // Un solo manejador para los tres selects, el `name` dice cuál ha cambiado.
   const handleSelectChange = (event) => {
     onFilterChange(event.target.name, event.target.value)
   }
@@ -78,10 +70,8 @@ export function SearchFormSection({ onTextFilter, onFilterChange, filters, initi
             Buscar empleos
           </label>
 
-          {/* Este input va SIN controlar (defaultValue en vez de value) a
-              propósito: con el debounce, la URL se actualiza medio segundo
-              después de escribir, y si el input dependiera de ella daría saltos
-              raros mientras escribes. Solo lee el valor inicial de la URL. */}
+          {/* defaultValue y no value: con el debounce, si el input dependiera
+              de la URL daría saltos raros al escribir */}
           <input
             ref={inputRef}
             id={idText}
@@ -97,9 +87,8 @@ export function SearchFormSection({ onTextFilter, onFilterChange, filters, initi
         </div>
 
         <div className="search-filters">
-          {/* Los selects SÍ van controlados: su `value` sale de la URL.
-              Esto es lo que hace que al recargar /search?technology=react
-              el desplegable siga mostrando "React" seleccionado. */}
+          {/* Los selects sí van controlados, por eso al recargar
+              /search?technology=react el desplegable sigue en "React" */}
           <label htmlFor={idTechnology} className="sr-only">
             Filtrar por tecnología
           </label>

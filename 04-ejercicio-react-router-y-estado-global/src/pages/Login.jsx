@@ -7,14 +7,12 @@ export function LoginPage() {
   const login = useAuthStore((state) => state.login)
   const navigate = useNavigate()
 
-  // Si ya has iniciado sesión, esta página no tiene sentido: te mandamos
-  // a tu perfil directamente.
+  // Si ya hay sesión esta página no pinta nada.
   if (isLoggedIn) return <Navigate to="/profile" replace />
 
   const handleSubmit = (event) => {
     event.preventDefault()
     login()
-    // Tras entrar, llevamos al usuario a su perfil.
     navigate('/profile', { replace: true })
   }
 

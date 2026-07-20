@@ -10,9 +10,8 @@ export function ProfilePage() {
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // Usamos el array de IDs convertido a texto como dependencia: si usáramos
-  // el array directamente, React compararía por referencia y el efecto se
-  // dispararía en cada render.
+  // Mismo truco que en Search: el array como dependencia se compara por
+  // referencia y dispararía el efecto en cada render.
   const favoritesKey = favorites.join(',')
 
   useEffect(() => {
@@ -28,9 +27,8 @@ export function ProfilePage() {
       try {
         setLoading(true)
 
-        // Promise.all lanza TODAS las peticiones a la vez y espera a que
-        // terminen. Si las hiciéramos con un for + await, irían una detrás de
-        // otra y tardaría mucho más.
+        // Promise.all lanza todas las peticiones a la vez, con un for + await
+        // irían una detrás de otra y tardaría mucho más.
         const results = await Promise.all(
           favorites.map((id) =>
             fetch(`https://jscamp-api.vercel.app/api/jobs/${id}`, {
@@ -39,7 +37,7 @@ export function ProfilePage() {
           )
         )
 
-        // Descartamos los que hayan fallado (por ejemplo, un empleo borrado).
+        // Descarto los que hayan fallado, por ejemplo un empleo ya borrado.
         setJobs(results.filter(Boolean))
       } catch (error) {
         if (error.name === 'AbortError') return
