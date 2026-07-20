@@ -41,7 +41,14 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
 
   return (
     <nav className={styles.pagination} aria-label="Paginación de resultados">
-      <a href={buildPageUrl(currentPage - 1)} style={stylePrevButton} onClick={handlePrevClick}>
+      {/* Estas dos flechas solo llevan un SVG dentro, así que sin aria-label se
+          quedan sin nombre accesible y no hay forma de pillarlas por rol */}
+      <a
+        href={buildPageUrl(currentPage - 1)}
+        aria-label="Anterior"
+        style={stylePrevButton}
+        onClick={handlePrevClick}
+      >
         <svg
           width="16"
           height="16"
@@ -69,7 +76,12 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
         </a>
       ))}
 
-      <a href={buildPageUrl(currentPage + 1)} style={styleNextButton} onClick={handleNextClick}>
+      <a
+        href={buildPageUrl(currentPage + 1)}
+        aria-label="Siguiente"
+        style={styleNextButton}
+        onClick={handleNextClick}
+      >
         <svg
           width="16"
           height="16"

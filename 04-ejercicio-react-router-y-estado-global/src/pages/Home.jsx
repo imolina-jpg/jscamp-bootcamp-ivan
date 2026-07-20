@@ -34,10 +34,12 @@ export function HomePage () {
               <path d="M21 21l-6 -6" />
             </svg>
 
+            {/* type="search" y no "text": así el input tiene rol searchbox y lo
+                encuentro desde los tests E2E con getByRole */}
             <input
               name="search"
               required
-              type="text"
+              type="search"
               placeholder="Buscar empleos por título, habilidad o empresa"
             />
 
