@@ -37,7 +37,8 @@ jobsRouter.get('/:id', JobController.getId)
 
 jobsRouter.post('/', validateCreate, JobController.create)
 
-jobsRouter.put('/:id', JobController.update)
+// PUT reemplaza el recurso entero, así que valida igual que el POST
+jobsRouter.put('/:id', validateCreate, JobController.update)
 
 jobsRouter.patch('/:id', validatePartialUpdate, JobController.partialUpdate)
 

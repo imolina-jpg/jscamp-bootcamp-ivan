@@ -5,11 +5,13 @@ export class JobModel {
 
     const filteredJobs = jobs.filter(job => {
 
-      const normalizeTech = () => text.toLowerCase()
+      // Ojo: aquí antes pasaba la función a includes() en vez de llamarla, así
+      // que el filtro por texto no encontraba nada nunca
+      const normalizedText = text?.toLowerCase()
 
       const matchText = text
-        ? job.titulo.toLowerCase().includes(normalizeTech)
-        || job.descripcion.toLowerCase().includes(normalizeTech)
+        ? job.titulo.toLowerCase().includes(normalizedText)
+        || (job.descripcion ?? '').toLowerCase().includes(normalizedText)
         : true
 
       const matchTech = technology ? (job.data.technology.includes(technology)) : true
