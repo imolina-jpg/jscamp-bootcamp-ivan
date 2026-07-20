@@ -67,6 +67,9 @@ sobrescribirlo mandándolo en el body.
   hardcodeado, pero el `config.js` que pide el enunciado dice `PORT: 1234`, y
   los ejemplos de curl del README también usan 1234. He hecho caso al enunciado
   y lo he sacado a `config.js`.
-- **Preparado para Vercel** (clase C30): `app.js` exporta la app y solo llama a
-  `app.listen()` si `NODE_ENV !== 'production'`, porque en serverless la
-  plataforma es quien levanta el servidor.
+- **Sobre el deploy en Vercel** (clase C30): llegué a dejar `app.js` exportando
+  la app y con el `app.listen()` condicionado a `NODE_ENV`, tal y como enseña
+  esa clase. Lo he quitado porque el enunciado de este ejercicio no pide
+  desplegar nada, y condicionar el arranque significaba que el servidor no
+  levantaba si alguien ejecutaba con `NODE_ENV=production`. Prefiero que el
+  ejercicio haga exactamente lo que se pide y nada más.
