@@ -32,6 +32,7 @@ export function DetailPage() {
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isApplied, setIsApplied] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -118,8 +119,14 @@ export function DetailPage() {
         </ul>
 
         <div className={styles.actions}>
-          <button className="button-apply-job" disabled={!isLoggedIn}>
-            {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
+          {/* Mismo patrón que en JobCard: el "aplicado" es estado local, no hay
+              endpoint de candidaturas todavía */}
+          <button
+            className={isApplied ? 'button-apply-job is-applied' : 'button-apply-job'}
+            disabled={!isLoggedIn}
+            onClick={() => setIsApplied(true)}
+          >
+            {!isLoggedIn ? 'Inicia sesión para aplicar' : isApplied ? 'Aplicado' : 'Aplicar'}
           </button>
 
           <FavoriteButton jobId={job.id} />

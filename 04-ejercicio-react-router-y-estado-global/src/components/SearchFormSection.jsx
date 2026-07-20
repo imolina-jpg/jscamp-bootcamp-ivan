@@ -75,7 +75,7 @@ export function SearchFormSection({ onTextFilter, onFilterChange, filters, initi
           <input
             ref={inputRef}
             id={idText}
-            type="text"
+            type="search"
             placeholder="Buscar trabajos, empresas o habilidades"
             onChange={handleTextChange}
             defaultValue={initialText}
