@@ -177,6 +177,15 @@ function formatSize(bytes) {
 if (resultado.length === 0) {
   console.log('(no hay nada que mostrar con esos filtros)')
 } else {
+  // Calculamos el ancho de la columna del nombre según el nombre MÁS LARGO
+  // que vayamos a pintar.
+  //
+  // Un ancho fijo (padEnd(20), por ejemplo) parece más simple, pero se rompe
+  // en cuanto un nombre lo supera: padEnd no recorta, así que ese nombre
+  // empuja su tamaño hacia la derecha y la columna deja de estar alineada.
+  // Calculándolo aquí, la tabla cuadra siempre.
+  const anchoNombre = Math.max(...resultado.map((entrada) => entrada.nombre.length))
+
   for (const entrada of resultado) {
     const icono = entrada.esCarpeta ? '📁' : '📄'
 
@@ -187,6 +196,6 @@ if (resultado.length === 0) {
 
     // padEnd rellena por la derecha y padStart por la izquierda. Así las
     // columnas quedan alineadas y la salida se lee de un vistazo.
-    console.log(`${icono} ${entrada.nombre.padEnd(24)} ${tamano.padStart(10)}`)
+    console.log(`${icono} ${entrada.nombre.padEnd(anchoNombre)} ${tamano.padStart(10)}`)
   }
 }
