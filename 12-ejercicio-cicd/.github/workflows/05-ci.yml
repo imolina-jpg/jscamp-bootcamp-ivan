@@ -1,0 +1,104 @@
+# Tarea 5: el pipeline de CI completo del monorepo.
+name: 05 - CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Todos los "run" de este workflow se ejecutan dentro de la carpeta
+# del ejercicio, que es donde vive el workspace de pnpm.
+defaults:
+  run:
+    working-directory: 12-ejercicio-cicd
+
+jobs:
+  # ---------------------------------------------------------------
+  # Fase 1: validación. Estos cuatro jobs no dependen de nadie,
+  # así que GitHub los lanza a la vez (en paralelo).
+  # ---------------------------------------------------------------
+  frontend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      # El checkout va SIEMPRE primero: sin el código descargado GitHub
+      # ni siquiera puede encontrar nuestra composite action local.
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Lint del frontend
+        run: pnpm lint:frontend
+
+  frontend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Tests del frontend
+        run: pnpm test:frontend
+
+  backend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Lint del backend
+        run: pnpm lint:backend
+
+  backend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Tests del backend
+        run: pnpm test:backend
+
+  # ---------------------------------------------------------------
+  # Fase 2: build. "needs" crea la dependencia: estos jobs esperan
+  # y solo arrancan si lint y test terminaron en verde.
+  # Si falla cualquiera de los dos, el build ni siquiera se ejecuta.
+  # ---------------------------------------------------------------
+  frontend-build:
+    needs: [frontend-lint, frontend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Build del frontend
+        run: pnpm build:frontend
+
+  backend-build:
+    needs: [backend-lint, backend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - name: Build del backend
+        run: pnpm build:backend
+
+  # ---------------------------------------------------------------
+  # Tarea 7 (opcional): matriz multiplataforma.
+  # No lleva "needs" ni nadie depende de él, así que corre por su
+  # cuenta y no bloquea el resto del pipeline.
+  # ---------------------------------------------------------------
+  frontend-test-matrix:
+    # La matriz genera un job por cada combinación: 3 sistemas x 2
+    # versiones de Node = 6 ejecuciones del mismo job.
+    strategy:
+      # fail-fast: false evita que el fallo de una combinación cancele
+      # las demás. Así vemos si el problema es solo de Windows, por ejemplo.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest, windows-latest]
+        node: ['22', '24']
+    # runs-on toma el valor de cada combinación de la matriz.
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Tests del frontend
+        # Forzamos bash también en Windows: así el comando se comporta
+        # igual en las tres plataformas.
+        shell: bash
+        run: pnpm test:frontend

@@ -1,0 +1,45 @@
+# Tarea 6: composite action reutilizable.
+# Agrupa los pasos que TODOS los jobs del CI repetían (preparar Node,
+# preparar pnpm e instalar dependencias) para no duplicarlos seis veces.
+name: Setup pnpm and Node.js for CI/CD
+description: Setup pnpm and Node.js for CI/CD
+
+# Los inputs permiten reutilizar la action con otras versiones sin tocarla.
+inputs:
+  node-version:
+    description: Versión de Node.js
+    required: false
+    default: '24'
+  pnpm-version:
+    description: Versión de pnpm
+    required: false
+    default: '11'
+
+runs:
+  # "composite" = la action es simplemente una lista de steps,
+  # no un contenedor de Docker ni código JavaScript.
+  using: 'composite'
+  steps:
+    # Primero pnpm: si instaláramos Node antes intentando cachear con pnpm,
+    # fallaría porque pnpm todavía no existiría en la máquina.
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+      with:
+        version: ${{ inputs.pnpm-version }}
+        # No instalamos aquí; lo hacemos en el último step.
+        run_install: false
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install dependencies
+      # working-directory: el workspace de pnpm vive en 12-ejercicio-cicd/,
+      # no en la raíz del repositorio.
+      working-directory: 12-ejercicio-cicd
+      # --frozen-lockfile obliga a instalar exactamente las versiones del
+      # lockfile: si alguien tocó el package.json sin actualizarlo, falla.
+      run: pnpm install --frozen-lockfile
+      # En una composite action cada step con "run" debe declarar su shell.
+      shell: bash

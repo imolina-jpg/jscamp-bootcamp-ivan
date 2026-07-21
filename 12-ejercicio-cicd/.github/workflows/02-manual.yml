@@ -1,0 +1,59 @@
+# Tarea 2: workflow manual que pide datos al usuario antes de ejecutarse.
+name: 02 - Manual
+
+on:
+  workflow_dispatch:
+    # "inputs" hace que GitHub muestre un formulario al pulsar "Run workflow".
+    inputs:
+      logging_level:
+        description: Nivel de log
+        required: true
+        default: info
+      environment:
+        description: Entorno de despliegue
+        required: true
+      dry_run:
+        description: Ejecutar sin aplicar cambios
+        # type: boolean pinta una casilla en vez de un campo de texto.
+        type: boolean
+        default: false
+      reason:
+        description: Motivo de la ejecución
+        default: Manual execution
+
+jobs:
+  manual:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Mostrar los inputs recibidos
+        # Pasamos los inputs por variables de entorno en lugar de escribir
+        # ${{ ... }} dentro del "run". Es la forma segura: si alguien escribe
+        # comandos raros en un input, aquí llegan como texto y no se ejecutan.
+        env:
+          LOG_LEVEL: ${{ inputs.logging_level }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          echo "LOG_LEVEL: $LOG_LEVEL"
+          echo "ENVIRONMENT: $ENVIRONMENT"
+          echo "DRY_RUN: $DRY_RUN"
+          echo "REASON: $REASON"
+
+      - name: Deploy
+        # "if" decide si el step se ejecuta. Solo desplegamos de verdad
+        # cuando dry_run está desmarcado.
+        if: ${{ inputs.dry_run == false }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: echo "Deploying to $ENVIRONMENT"
+
+      - name: Dry run
+        # La condición contraria: simulacro, no se toca nada.
+        if: ${{ inputs.dry_run == true }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        # Usamos bloque "|" porque el texto lleva dos puntos y en YAML
+        # eso confundiría al parser si fuera una cadena suelta.
+        run: |
+          echo "Dry run activado: no se despliega nada en $ENVIRONMENT"
