@@ -1,17 +1,18 @@
-/* Aquí deberás tipar las funciones con los tipos ya creados. Teniendo en cuenta que el tipo SearchResult es un union type que puede ser:
+/* Octavo ejercicio: union types y type narrowing avanzado */
 
-- { success: true; jobs: Job[]; count: number }
-- { success: false; error: string }
-
-Tendrás que tipar la función safeSearch y displaySearchResults, verificando que la lógica de la función sea correcta o hay algún error.
-*/
+import type { Job } from './objects.ts'
 
 import { searchJobs } from './functions.ts'
 
-export type SearchResult = any
+// Esto es un "discriminated union": las dos formas comparten la propiedad
+// `success`, y su valor (true o false) es lo que le dice a TypeScript en cual
+// de las dos estamos. Por eso el caso de error no tiene `jobs` ni `count`.
+export type SearchResult =
+  | { success: true; jobs: Job[]; count: number }
+  | { success: false; error: string }
 
 // Función que devuelve SearchResult
-export function safeSearch(jobs: any[], searchTerm: any): SearchResult {
+export function safeSearch(jobs: Job[], searchTerm: string): SearchResult {
   if (!searchTerm || searchTerm.trim().length === 0) {
     return {
       success: false,
@@ -30,9 +31,14 @@ export function safeSearch(jobs: any[], searchTerm: any): SearchResult {
 
 // Función para mostrar resultados usando type narrowing
 export function displaySearchResults(result: SearchResult): void {
-  if (result.succes) {
+  // La plantilla comprobaba `result.succes` (sin la segunda s). En JavaScript
+  // eso es siempre undefined y siempre entraria por el else; TypeScript lo pilla
+  // porque esa propiedad no existe en ninguna de las dos ramas del union.
+  if (result.success) {
+    // Aqui dentro TypeScript ya sabe que estamos en el caso de exito, asi que
+    // nos deja usar count y jobs sin comprobar nada mas.
     console.log(`Encontrados ${result.count} empleos:`)
-    result.jobs.forEach((job: any) => {
+    result.jobs.forEach((job) => {
       console.log(`- ${job.title} en ${job.company}`)
     })
   } else {
