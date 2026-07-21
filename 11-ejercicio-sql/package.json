@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "seed": "tsx db/seed.ts",
     "dev": "tsx watch app.ts",
     "start": "tsx app.ts",
     "build": "tsc",
