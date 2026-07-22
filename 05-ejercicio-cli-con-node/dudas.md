@@ -51,6 +51,28 @@ console.exit(1)
 
 Y luego seguir con tu flujo normal
 
+**Mi apunte sobre la respuesta:** he aplicado el optional chaining, pero le he
+añadido `?? true`:
+
+```js
+const puedeLeer = process.permission?.has('fs.read', folder) ?? true
+```
+
+Sin el `?? true`, cuando ejecuto `node cli.js .` (sin `--permission`),
+`process.permission` es `undefined`, el `?.` corta y devuelve `undefined`, que
+es *falsy*. Así que entraba en el `if (!puedeLeer)` y el CLI abortaba siempre,
+aunque Node tuviera acceso total. Con `?? true` digo "si no hay nada que
+comprobar, damos por hecho que sí puede", y los tres casos funcionan:
+
+```bash
+node cli.js .                               # ✅ lista
+node --permission cli.js .                  # ❌ mensaje de error (correcto)
+node --permission --allow-fs-read=. cli.js  # ✅ lista
+```
+
+(En el ejemplo de la respuesta también faltaba el `!` en la condición y
+`console.exit` es `process.exit`, pero se entiende la idea.)
+
 ### 3. Cómo hacer que los flags funcionen en cualquier orden
 
 Era el punto que más me costó. La clave está en no leer `process.argv` por

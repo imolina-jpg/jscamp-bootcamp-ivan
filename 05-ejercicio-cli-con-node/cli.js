@@ -52,9 +52,14 @@ const folder = args.find((arg) => !arg.startsWith('--')) ?? '.'
 // .has('fs.read', ruta) nos dice si tenemos permiso ANTES de intentar leer.
 // Preguntar primero nos permite dar un error claro en vez de dejar que el
 // programa "explote" con un error críptico del sistema.
-const puedeLeer = process.permission?.has('fs.read', folder)
+//
+// El `?.` evita el `if (process.permission)` que envolvía todo, pero se queda a
+// medias: si NO estamos en modo permisos devuelve undefined, y undefined es
+// falsy, así que el CLI abortaría siempre aunque tuviera acceso total. Por eso
+// añado `?? true`: "si no hay nada que comprobar, damos por hecho que sí puede".
+const puedeLeer = process.permission?.has('fs.read', folder) ?? true
 
-if(!puedeLeer) {
+if (!puedeLeer) {
   console.error(`❌ No tienes permisos de lectura sobre "${folder}".`)
   console.error('')
   console.error('   Node.js está en modo restringido (--permission).')
