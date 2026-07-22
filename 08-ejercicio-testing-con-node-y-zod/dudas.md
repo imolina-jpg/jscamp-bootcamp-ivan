@@ -28,6 +28,12 @@ npm? Lo segundo obliga a instalar una dependencia solo para eso, y el enunciado
 insiste en no meter dependencias externas, por eso he tirado por el import
 dinámico.
 
+**Respuesta:**
+Es mejor agregar las variables en el `package.json` por dos razones:
+- No condicionamos el código
+- Siempre vamos a querer correr los tests en entornos de test, por lo que no habría problema colocar las variables ahí
+- `cross-env` es necesario solo para windows, depende el sistema operativo que uses, pero no me parece una mala práctica sabiendo que muchos scripts en los package.json tienen este tipo de directivas. 
+
 ### 2. Un bug real que ha salido gracias a los tests
 
 Justo lo que decía la clase que pasaría. En `models/job.js` el filtro por texto
@@ -62,6 +68,9 @@ los datos del JSON y el test se puede ejecutar solo.
 
 **Duda:** ¿se esperaba que usara literalmente los IDs del enunciado aunque
 acoplara los tests entre sí?
+
+**Respuesta:**
+Lo que hiciste está perfecto, en este caso los tenemos en memoria, pero por lo general lo que hacemos es crear una lista de `jobs` diferente para que los valores sean dinámicos. En caso de eliminar elementos que no se van a reconstruir en el siguiente test, podemos hacer esto.
 
 ### 4. Validación en el PUT
 
