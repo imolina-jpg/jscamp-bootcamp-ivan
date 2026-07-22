@@ -47,24 +47,24 @@ const folder = args.find((arg) => !arg.startsWith('--')) ?? '.'
 // process.permission solo EXISTE si arrancamos con --permission. Si el usuario
 // ejecuta el CLI normal (sin ese flag), process.permission es undefined y no
 // hay nada que comprobar: Node tiene acceso total.
-if (process.permission) {
-  // .has('fs.read', ruta) nos dice si tenemos permiso ANTES de intentar leer.
-  // Preguntar primero nos permite dar un error claro en vez de dejar que el
-  // programa "explote" con un error críptico del sistema.
-  const puedeLeer = process.permission.has('fs.read', folder)
 
-  if (!puedeLeer) {
-    console.error(`❌ No tienes permisos de lectura sobre "${folder}".`)
-    console.error('')
-    console.error('   Node.js está en modo restringido (--permission).')
-    console.error('   Para permitir la lectura de esa carpeta, ejecuta:')
-    console.error('')
-    console.error(`   node --permission --allow-fs-read=${folder} cli.js ${folder}`)
-    console.error('')
-    // process.exit(1) termina el programa con código de error. Por convención
-    // en la terminal: 0 = todo bien, cualquier otro número = algo falló.
-    process.exit(1)
-  }
+// MADEVAL: Para no tener toda la lógica en el `if`, voy a evaluar el caso negativo primero:
+// .has('fs.read', ruta) nos dice si tenemos permiso ANTES de intentar leer.
+// Preguntar primero nos permite dar un error claro en vez de dejar que el
+// programa "explote" con un error críptico del sistema.
+const puedeLeer = process.permission?.has('fs.read', folder)
+
+if(!puedeLeer) {
+  console.error(`❌ No tienes permisos de lectura sobre "${folder}".`)
+  console.error('')
+  console.error('   Node.js está en modo restringido (--permission).')
+  console.error('   Para permitir la lectura de esa carpeta, ejecuta:')
+  console.error('')
+  console.error(`   node --permission --allow-fs-read=${folder} cli.js ${folder}`)
+  console.error('')
+  // process.exit(1) termina el programa con código de error. Por convención
+  // en la terminal: 0 = todo bien, cualquier otro número = algo falló.
+  process.exit(1)
 }
 
 // ---------------------------------------------------------------------------
@@ -130,7 +130,9 @@ let resultado = entradas
 
 if (flags.has('--files')) {
   resultado = resultado.filter((entrada) => !entrada.esCarpeta)
-} else if (flags.has('--folders')) {
+}
+/* MADEVAL: NO hace falta un `else if`, con un `if` es suficiente */
+if (flags.has('--folders')) {
   resultado = resultado.filter((entrada) => entrada.esCarpeta)
 }
 
@@ -148,7 +150,8 @@ if (flags.has('--files')) {
 // modificar el original. Más seguro y más fácil de razonar.
 if (flags.has('--asc')) {
   resultado = resultado.toSorted((a, b) => a.nombre.localeCompare(b.nombre))
-} else if (flags.has('--desc')) {
+}
+if (flags.has('--desc')) {
   resultado = resultado.toSorted((a, b) => b.nombre.localeCompare(a.nombre))
 }
 
@@ -176,26 +179,28 @@ function formatSize(bytes) {
 
 if (resultado.length === 0) {
   console.log('(no hay nada que mostrar con esos filtros)')
-} else {
-  // Calculamos el ancho de la columna del nombre según el nombre MÁS LARGO
-  // que vayamos a pintar.
-  //
-  // Un ancho fijo (padEnd(20), por ejemplo) parece más simple, pero se rompe
-  // en cuanto un nombre lo supera: padEnd no recorta, así que ese nombre
-  // empuja su tamaño hacia la derecha y la columna deja de estar alineada.
-  // Calculándolo aquí, la tabla cuadra siempre.
-  const anchoNombre = Math.max(...resultado.map((entrada) => entrada.nombre.length))
-
-  for (const entrada of resultado) {
-    const icono = entrada.esCarpeta ? '📁' : '📄'
-
-    // El README pide que las carpetas muestren "-" en vez de un tamaño: el
-    // tamaño que da stat() de un directorio no es la suma de su contenido,
-    // así que mostrarlo sería engañoso.
-    const tamano = entrada.esCarpeta ? '-' : formatSize(entrada.bytes)
-
-    // padEnd rellena por la derecha y padStart por la izquierda. Así las
-    // columnas quedan alineadas y la salida se lee de un vistazo.
-    console.log(`${icono} ${entrada.nombre.padEnd(anchoNombre)} ${tamano.padStart(10)}`)
-  }
+  process.exit(1)
 }
+/* MADEVAL: Podemos evitar el else y su entra en el `if`, directamente cerramos el proceso en consola */
+// Calculamos el ancho de la columna del nombre según el nombre MÁS LARGO
+// que vayamos a pintar.
+//
+// Un ancho fijo (padEnd(20), por ejemplo) parece más simple, pero se rompe
+// en cuanto un nombre lo supera: padEnd no recorta, así que ese nombre
+// empuja su tamaño hacia la derecha y la columna deja de estar alineada.
+// Calculándolo aquí, la tabla cuadra siempre.
+const anchoNombre = Math.max(...resultado.map((entrada) => entrada.nombre.length))
+
+for (const entrada of resultado) {
+  const icono = entrada.esCarpeta ? '📁' : '📄'
+
+  // El README pide que las carpetas muestren "-" en vez de un tamaño: el
+  // tamaño que da stat() de un directorio no es la suma de su contenido,
+  // así que mostrarlo sería engañoso.
+  const tamano = entrada.esCarpeta ? '-' : formatSize(entrada.bytes)
+
+  // padEnd rellena por la derecha y padStart por la izquierda. Así las
+  // columnas quedan alineadas y la salida se lee de un vistazo.
+  console.log(`${icono} ${entrada.nombre.padEnd(anchoNombre)} ${tamano.padStart(10)}`)
+}
+
