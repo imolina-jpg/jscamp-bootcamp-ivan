@@ -17,6 +17,9 @@ secretos. Aquí lo he subido al repo a propósito, porque solo contiene el puert
 (no hay nada sensible) y si no, el ejercicio no arrancaría al clonarlo. ¿Es lo
 correcto en este caso o preferís que lo ignore y deje solo el `.env.example`?
 
+**Respuesta:**
+En este caso que es sumamente académico y no hay riesgo, puedes dejarlo. Pero es como dices, en producción y otros proyectos, siempre tiene que estar en el `.gitignore`. Si se quiere subir algo siempre debe ser el `.env.example`.
+
 ### 2. `await json(req)` sí existe, pero hay que importarlo
 
 El README lo menciona como si estuviera disponible sin más, y al principio pensé
@@ -30,6 +33,9 @@ import { json } from 'node:stream/consumers'
 Es lo que uso. Merece la pena saber qué hace por debajo: el body de una petición
 no llega como objeto, llega como un **stream** (trozos de bytes que van
 cayendo), y `json()` espera a que lleguen todos y los convierte de golpe.
+
+**Respuesta:**
+Excelente! Es lo que esperábamos. Siempre es bueno saber como funciona por detrás las cosas que usamos.
 
 ### 3. El array `users` estaba declarado después de `server.listen()`
 
