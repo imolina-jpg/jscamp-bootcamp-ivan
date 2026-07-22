@@ -14,6 +14,9 @@ que explica la clase C03 ("Ficheros y sistema de módulos"). La otra opción era
 renombrar el archivo a `cli.mjs`, pero el README pide expresamente ejecutar
 `node cli.js`, así que el `package.json` me pareció el camino correcto.
 
+**Respuesta:**
+Excelente! Es lo correcto
+
 ### 2. El flag de permisos ya no se llama `--experimental-permission`
 
 La clase C08 enseña `node --experimental-permission index.js`. En Node 24 (la
@@ -33,9 +36,27 @@ node --permission --allow-fs-read=. cli.js  # ✅ funciona
 comprobar. Lo he resuelto con un `if (process.permission)` antes de preguntar,
 pero no sé si se espera que el CLI *obligue* siempre a usar el modo permisos.
 
+**Respuesta:**
+Una cosa que podes hacer un Optional chaining (?.):
+
+```js
+if(process.permission?.has('fs.read', folder)) {
+  console.error(`
+No tienes permisos de lectura para la carpeta ${folder}
+Para acceder debes ejecutar node --permission --allow-fs-read=. cli.js 
+`)
+console.exit(1)
+}
+```
+
+Y luego seguir con tu flujo normal
+
 ### 3. Cómo hacer que los flags funcionen en cualquier orden
 
 Era el punto que más me costó. La clave está en no leer `process.argv` por
 índice (`argv[2]`, `argv[3]`...), porque eso obliga a un orden fijo. En vez de
 eso separo los argumentos en dos grupos: los que empiezan por `--` son flags, y
 el que no, es la ruta. Así da igual dónde escriba cada cosa.
+
+**Respuesta**:
+Excelente! Si, es un poco la idea. Vi que lo hiciste con un `Set`, está perfecto!
