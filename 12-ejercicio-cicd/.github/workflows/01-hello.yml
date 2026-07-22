@@ -1,0 +1,41 @@
+# Tarea 1: mi primer workflow.
+# "name" es el nombre que aparece en la pestaña Actions de GitHub.
+name: 01 - Hello
+
+# "on" define QUÉ evento dispara el workflow.
+# workflow_dispatch = ejecución manual desde la interfaz de GitHub (botón "Run workflow").
+on:
+  workflow_dispatch:
+
+# "jobs" son los trabajos del workflow. Como ninguno declara "needs",
+# GitHub los ejecuta EN PARALELO, cada uno en su propia máquina.
+jobs:
+  # Job 1: solo imprime cosas. No necesita el código del repositorio.
+  saludar:
+    # Fijamos la versión exacta del runner en vez de "ubuntu-latest":
+    # así una actualización futura de GitHub no rompe el workflow.
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Saludar
+        run: echo "Hola desde GitHub Actions!"
+
+      - name: Ver la fecha del runner
+        run: date
+
+      - name: Listar los archivos
+        # Ojo: aquí la lista sale VACÍA, porque la máquina arranca sin
+        # el código del repositorio (no hemos hecho checkout).
+        run: ls -la
+
+  # Job 2: sí necesita los archivos del repositorio.
+  repo-files:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Descargar el código del repositorio
+        # actions/checkout es la action oficial que clona el repo dentro del runner.
+        # Sin ella la máquina está vacía y no hay nada sobre lo que trabajar.
+        uses: actions/checkout@v6
+
+      - name: Listar los archivos
+        # Ahora sí aparecen las carpetas y archivos del proyecto.
+        run: ls -la

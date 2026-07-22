@@ -1,0 +1,30 @@
+# Tarea 3: workflow programado con cron.
+name: 03 - Schedule
+
+on:
+  schedule:
+    # Una expresión cron tiene CINCO campos separados por espacios:
+    #
+    #   ┌───────────── minuto        (0-59)
+    #   │ ┌─────────── hora          (0-23)
+    #   │ │ ┌───────── día del mes   (1-31)
+    #   │ │ │ ┌─────── mes           (1-12)
+    #   │ │ │ │ ┌───── día de semana (0-6, donde 0 = domingo y 1 = lunes)
+    #   │ │ │ │ │
+    #   0 9 * * 1
+    #
+    # El asterisco significa "cualquier valor".
+    # Así que '0 9 * * 1' = minuto 0, hora 9, cualquier día del mes,
+    # cualquier mes, pero solo los lunes -> todos los lunes a las 9:00.
+    # Nota: GitHub usa siempre la hora UTC.
+    - cron: '0 9 * * 1'
+
+  # Lo dejamos también manual para poder probarlo sin esperar al lunes.
+  workflow_dispatch:
+
+jobs:
+  saludar:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Saludar
+        run: echo "Hola desde GitHub Actions!"

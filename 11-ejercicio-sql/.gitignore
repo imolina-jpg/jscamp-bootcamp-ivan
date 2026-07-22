@@ -1,0 +1,7 @@
+node_modules
+dist
+
+# La base de datos es un archivo binario que genera el seed
+jobs.db
+jobs.db-shm
+jobs.db-wal

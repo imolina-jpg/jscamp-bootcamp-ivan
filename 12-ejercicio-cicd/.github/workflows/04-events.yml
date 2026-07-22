@@ -1,0 +1,45 @@
+# Tarea 4: reaccionar a eventos que ocurren en el repositorio.
+name: 04 - Events
+
+on:
+  # "types" acota qué acciones concretas del evento nos interesan.
+  issues:
+    types: [opened, assigned]
+  issue_comment:
+    types: [created]
+  # Comentarios dentro de la revisión de una Pull Request.
+  pull_request_review_comment:
+
+jobs:
+  inspect-event:
+    runs-on: ubuntu-24.04
+    # Por defecto el token del workflow es de solo lectura.
+    # Para poder escribir un comentario necesitamos permiso de escritura en issues.
+    permissions:
+      issues: write
+    steps:
+      - name: Inspeccionar el evento
+        # Igual que antes: los datos del evento entran por variables de entorno.
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          echo "Evento: $EVENT_NAME"
+          echo "Número de la issue: $ISSUE_NUMBER"
+          echo "Comentario: $COMMENT_BODY"
+
+      - name: Comentar como bot al abrir una issue
+        # Solo cuando el evento es "issues" y la acción concreta es "opened".
+        if: ${{ github.event_name == 'issues' && github.event.action == 'opened' }}
+        env:
+          # gh (el CLI de GitHub) viene preinstalado en el runner, pero
+          # necesita un token para autenticarse. GITHUB_TOKEN lo genera
+          # GitHub automáticamente para cada ejecución.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --repo "$REPO" \
+            --body "Gracias por abrir esta issue. La revisaremos lo antes posible."
