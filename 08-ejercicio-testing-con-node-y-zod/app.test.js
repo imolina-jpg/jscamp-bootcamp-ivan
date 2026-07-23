@@ -1,17 +1,20 @@
-import test, { describe, before, after } from 'node:test'
 import assert from 'node:assert/strict'
+import test, { after, before, describe } from 'node:test'
 
 // app.js solo hace listen() si NODE_ENV está vacío. Los import se hoistean, así
 // que lo cargo con import() dinámico para poder marcar el entorno antes y ser yo
 // quien levante el servidor en el before()
-process.env.NODE_ENV = 'test'
-const { default: app } = await import('./app.js')
+// process.env.NODE_ENV = 'test'
+// const { default: app } = await import('./app.js')
+/* MADEVAL: Buena solución, pero en la práctica lo mejor es manejar estas cosas desde `package.json` agregando las variables de entorno en el propio script. Por ejemplo, si ves el script de `test` y `test:watch`, verás que agregamos la variable de entorno ahí. Son dos scripts que se van a ejecutar siempre en modo desarrollo así que simplificamos el import que teníamos de esta manera (Y queda agnóstico al código) */
+import app from './app.js'
 
 // Puerto distinto al de desarrollo para no chocar con el servidor que tenga abierto
 const PORT = 5678
 const baseURL = `http://localhost:${PORT}/jobs`
 
 // IDs que existen en jobs.json
+/* MADEVAL: Excelente! En este caso usaremos valores estáticos, pero lo mejor es siempre obtener valores en tiempo real por si ejecutamos tests con diferentes fuentes */
 const ID_ANALISTA = 'd35b2c89-5d60-4f26-b19a-6cfb2f1a0f57'
 const ID_MOVILES = 'e31f9a92-61d7-4b7a-b3a2-91e8c1f40b2d'
 const ID_DEVOPS = 'f62d8a34-923a-4ac2-9b0b-14e0ac2f5405'
@@ -39,38 +42,61 @@ after(async () => {
   })
 })
 
+/* MADEVAL: En muchos tests repetimos el mismo fetch con el strictEqual y la transformación a JSON, así que lo podemos pasar a una función  */
+const handleGetResponseAndCheckStatus = async ({ path, status = 200 }) => {
+  const LOCAL_BASE_URL = `http://localhost:${PORT}`
+
+  /* Damos la posibilidad al usuario de mandar el path con `/` o sin el */
+  const normalizePath = path.startsWith('/') ? path : `/${path}`
+
+  const res = await fetch(`${LOCAL_BASE_URL}${normalizePath}`)
+  assert.strictEqual(res.status, 200)
+
+  return await res.json()
+}
+
+
 describe('GET /jobs', () => {
   test('debe responder con 200 y un array de trabajos', async () => {
-    const response = await fetch(baseURL)
-    assert.strictEqual(response.status, 200)
-
-    const json = await response.json()
+    const json = await handleGetResponseAndCheckStatus({ path: '/jobs' })
+    
     // La API no devuelve el array pelado, lo mete dentro de data
     assert.ok(Array.isArray(json.data), 'La respuesta debe traer un array en json.data')
   })
-
+  
   test('debe filtrar trabajos por tecnología', async () => {
-    const response = await fetch(`${baseURL}?technology=react`)
-    assert.strictEqual(response.status, 200)
+    /* MADEVAL: Podemos pasar como variable la tecnología que vamos a usar para testear, por si mañana queremos probar con otro caso. Es más, hasta podemos tener un array de `techs` y con un Math.random() usar de manera aleatoria para darle más opciones al test */
+    const TECH = 'react'
+    const json = await handleGetResponseAndCheckStatus({ path: `/jobs?technology=${TECH}` })
 
-    const json = await response.json()
     assert.ok(json.data.length > 0, 'Debería haber al menos un trabajo con react')
 
-    const todosLlevanReact = json.data.every((job) => job.data.technology.includes('react'))
-    assert.ok(todosLlevanReact, 'Todos los trabajos devueltos deben incluir react')
+    const todosLlevanReact = json.data.every((job) => job.data.technology.includes(TECH))
+    assert.ok(todosLlevanReact, `Todos los trabajos devueltos deben incluir ${TECH}`)
   })
 
   test('debe respetar el límite de resultados', async () => {
-    const response = await fetch(`${baseURL}?limit=2`)
-    const json = await response.json()
+    /* MADEVAL: Mismo caso que el test anterior */
+    const LIMIT = 2
+    const json = await handleGetResponseAndCheckStatus({ path: `/jobs?limit=${LIMIT}` })
 
-    assert.strictEqual(json.limit, 2)
-    assert.strictEqual(json.data.length, 2)
+    assert.strictEqual(json.limit, LIMIT)
+    assert.strictEqual(json.data.length, LIMIT)
   })
 
   test('debe aplicar el offset correctamente', async () => {
-    const response = await fetch(`${baseURL}?offset=1`)
-    const json = await response.json()
+    const OFFSET = 2
+    const json = await handleGetResponseAndCheckStatus({ path: `/jobs?offset=${OFFSET}` })
+
+    /*
+    MADEVAL: Esto se puede mejorar haciendo:
+    - Un fetch a todos los `jobs`
+    - Guardar en una variable el segundo de la lista (offset)
+    - Hacer la petición que hicimos en este test
+    - Igualar el segundo que de todos los jobs con el primero de la petición con offset
+    
+    Con esto no dependemos de un ID hardcodeado
+    */
 
     // Saltando el primero, el que abre la lista es el segundo del JSON
     assert.strictEqual(json.data[0].id, ID_ANALISTA)
@@ -90,6 +116,7 @@ describe('POST /jobs', () => {
     },
   }
 
+  /* MADEVAL: Tenemos un handler que es para métodos GET, lo que podemos hacer es tener un nuevo handler para métodos POST y los que siguen. Que una función abarque todo también es una opción pero para no complejizar, prefiero separar en responsabilidades */
   const postJob = (body) =>
     fetch(baseURL, {
       method: 'POST',
