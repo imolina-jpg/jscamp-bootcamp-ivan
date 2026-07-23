@@ -1,0 +1,18 @@
+# Tarea 8 (opcional): Despliegue en Vercel (app en Go)
+#
+# Nombre exacto: Dockerfile.vercel (Vercel lo detecta por defecto).
+# Es multipaso: compilamos el binario en una imagen con el toolchain de Go
+# y copiamos SOLO el binario a una imagen Alpine final, mucho más ligera.
+
+# --- Etapa 1: builder (compila el binario de Go) ---
+FROM golang:1.24-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o /server main.go
+
+# --- Etapa 2: runner (solo ejecuta el binario) ---
+FROM alpine:3.20 AS runner
+# Copiamos únicamente el binario compilado desde la etapa builder
+COPY --from=builder /server /server
+# Comando de inicio (la app lee el puerto de la variable PORT, o 80 por defecto)
+CMD ["/server"]

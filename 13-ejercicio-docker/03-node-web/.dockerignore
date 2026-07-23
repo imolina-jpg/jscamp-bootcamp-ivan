@@ -1,0 +1,21 @@
+# Evita enviar archivos innecesarios al contexto de build.
+# node_modules se instala dentro de la imagen con npm ci, nunca se copia el local
+# (podría traer binarios compilados para otro sistema operativo).
+node_modules
+
+# Control de versiones
+.git
+.gitignore
+
+# Documentación
+*.md
+
+# Variables de entorno (se pasan con -e o --env-file, no se hornean en la imagen)
+.env
+.env.*
+
+# Archivos del sistema operativo
+.DS_Store
+
+# Configuración del editor
+.vscode

@@ -1,0 +1,11 @@
+# Tarea 4: compose.yaml generado por `docker init`
+#
+# Docker Compose permite arrancar el servicio con un solo comando: `docker compose up`.
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
