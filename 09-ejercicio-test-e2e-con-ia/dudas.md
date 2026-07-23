@@ -21,6 +21,14 @@ el elemento, muchas veces el problema no es el selector sino el HTML.
 
 **Duda:** ¿era esto lo esperado, o se daba por hecho que la app ya venía así?
 
+**Respuesta:**
+Si! Totalmente. Si getByRole('searchbox') no encuentra la parte de la aplicación que queremos testear, la app no es accesible, y eso no se arregla con un selector más flojo. Los tres cambios que hiciste son exactamente eso:
+- type="search"
+- aria-label en flechas con SVG
+- Botón "Aplicar" funcional
+
+En resumen, lo hiciste perfecto! No hay que bajar el nivel de los test, hay que mejorar el nivel de la aplicación
+
 ### 2. Con "React" no se podía probar la paginación
 
 El enunciado dice "hacer una búsqueda que devuelva más de x resultados". Mi app
@@ -40,6 +48,9 @@ recargar, porque de otra forma fallarían.
 **Duda:** ¿debería haberlo subido a Zustand y persistirlo, o para este ejercicio
 vale con el estado local? Lo he dejado como estaba porque el módulo anterior ya
 estaba entregado así.
+
+**Respuesta:**
+No hace falta. Si haces la modificación el ejercicio se iría del foco de los test E2E, mejor dejarlo así y testear el cambio de estado en la misma vista.
 
 ### 4. Dos fallos que me salieron y por qué
 
