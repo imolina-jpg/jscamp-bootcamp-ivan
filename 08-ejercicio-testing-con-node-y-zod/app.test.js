@@ -50,7 +50,7 @@ const handleGetResponseAndCheckStatus = async ({ path, status = 200 }) => {
   const normalizePath = path.startsWith('/') ? path : `/${path}`
 
   const res = await fetch(`${LOCAL_BASE_URL}${normalizePath}`)
-  assert.strictEqual(res.status, 200)
+  assert.strictEqual(res.status, status)
 
   return await res.json()
 }
@@ -98,8 +98,8 @@ describe('GET /jobs', () => {
     Con esto no dependemos de un ID hardcodeado
     */
 
-    // Saltando el primero, el que abre la lista es el segundo del JSON
-    assert.strictEqual(json.data[0].id, ID_ANALISTA)
+    // Saltando los dos primeros, el que abre la lista es el tercero del JSON
+    assert.strictEqual(json.data[0].id, ID_MOVILES)
   })
 })
 

@@ -34,6 +34,12 @@ Es mejor agregar las variables en el `package.json` por dos razones:
 - Siempre vamos a querer correr los tests en entornos de test, por lo que no habría problema colocar las variables ahí
 - `cross-env` es necesario solo para windows, depende el sistema operativo que uses, pero no me parece una mala práctica sabiendo que muchos scripts en los package.json tienen este tipo de directivas. 
 
+> Nota mía: estoy en Windows, así que `NODE_ENV=test node --test` a secas fallaba
+> ("NODE_ENV no se reconoce"). He añadido `cross-env` como devDependency y dejado
+> los scripts como `cross-env NODE_ENV=test node --test`. Con eso los 18 tests pasan.
+> También ajusté el test de offset: con `OFFSET=2` el primero de la respuesta es el
+> tercero del JSON (`ID_MOVILES`), no `ID_ANALISTA`.
+
 ### 2. Un bug real que ha salido gracias a los tests
 
 Justo lo que decía la clase que pasaría. En `models/job.js` el filtro por texto
