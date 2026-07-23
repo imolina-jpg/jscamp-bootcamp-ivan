@@ -1,1 +1,2 @@
 <!-- Aquí irá el feedback del ejercicio -->
+Excelente trabajo! Sobre el código, nada que agregar. Dejamos respuesta a tus dudas en `dudas.md`. Los planteos y decisiones que tomaste son las correctas :)
