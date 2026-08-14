@@ -73,6 +73,7 @@ app.listen(PORT, () => {
 ║   ?tech=React                              ║
 ║   ?modality=remote                         ║
 ║   ?level=senior                            ║
+║   ?limit=20&offset=0                       ║
 ║                                            ║
 ╚════════════════════════════════════════════╝
   `)

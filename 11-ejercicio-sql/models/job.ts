@@ -61,6 +61,27 @@ const toJobWithContent = (row: JobContentRow): Job => {
   return job
 }
 
+// ================================
+// PAGINACIÓN
+// ================================
+
+const DEFAULT_LIMIT = 20
+const MAX_LIMIT = 100
+
+// SQLite solo acepta enteros en LIMIT y OFFSET: si le llega un decimal o un
+// NaN revienta con "datatype mismatch" y se lleva el servidor por delante.
+// Aquí nos aseguramos de que siempre salga un entero dentro de un rango sano.
+const toBoundedInt = (
+  value: number | undefined,
+  fallback: number,
+  min: number,
+  max: number
+): number => {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return fallback
+
+  return Math.min(Math.max(Math.trunc(value), min), max)
+}
+
 export class JobModel {
   // Obtener todos los jobs con filtros opcionales
   static async getAll(filters?: JobFilters): Promise<Job[]> {
@@ -93,10 +114,8 @@ export class JobModel {
 
     // Paginación: clamp para no aceptar valores absurdos ni negativos.
     // Por defecto un page razonable si el cliente no manda nada.
-    const DEFAULT_LIMIT = 20
-    const MAX_LIMIT = 100
-    const limit = Math.min(Math.max(filters?.limit ?? DEFAULT_LIMIT, 1), MAX_LIMIT)
-    const offset = Math.max(filters?.offset ?? 0, 0)
+    const limit = toBoundedInt(filters?.limit, DEFAULT_LIMIT, 1, MAX_LIMIT)
+    const offset = toBoundedInt(filters?.offset, 0, 0, Number.MAX_SAFE_INTEGER)
 
     // LEFT JOIN (y no JOIN a secas) para que un job sin tecnologías
     // siga apareciendo en el listado.

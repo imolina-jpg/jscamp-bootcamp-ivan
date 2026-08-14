@@ -151,7 +151,7 @@ npm run dev
 curl http://localhost:3000/jobs
 
 # Filtrar por tecnología
-curl http://localhost:3000/jobs?technology=react
+curl http://localhost:3000/jobs?tech=react
 
 # Filtrar por modalidad
 curl http://localhost:3000/jobs?modality=remote
@@ -160,7 +160,7 @@ curl http://localhost:3000/jobs?modality=remote
 curl http://localhost:3000/jobs?level=senior
 
 # Combinar filtros
-curl "http://localhost:3000/jobs?technology=react&modality=remote"
+curl "http://localhost:3000/jobs?tech=react&modality=remote"
 
 # Paginar resultados
 curl "http://localhost:3000/jobs?limit=2&offset=0"

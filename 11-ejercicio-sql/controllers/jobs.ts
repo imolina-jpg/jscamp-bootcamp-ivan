@@ -1,13 +1,30 @@
 import type { Request, Response } from 'express'
 import { JobModel } from '../models/job'
-import type { JobFilters } from '../types'
+import type { JobQuery } from '../types'
+
+// Convierte un query param de texto a número entero.
+// Si el cliente manda algo que no es un entero ("abc", "1.5", ""), devolvemos
+// undefined y el modelo aplicará su valor por defecto en vez de romperse.
+const toInteger = (value?: string): number | undefined => {
+  if (value === undefined || value.trim() === '') return undefined
+
+  const parsed = Number(value)
+
+  return Number.isInteger(parsed) ? parsed : undefined
+}
 
 export class JobController {
   // GET /jobs
   // Query params tipados
-  static async getAll(req: Request<{}, {}, {}, JobFilters>, res: Response): Promise<void> {
+  static async getAll(req: Request<{}, {}, {}, JobQuery>, res: Response): Promise<void> {
     const { tech, modality, level, limit, offset } = req.query
-    const jobs = await JobModel.getAll({ tech, modality, level, limit, offset })
+    const jobs = await JobModel.getAll({
+      tech,
+      modality,
+      level,
+      limit: toInteger(limit),
+      offset: toInteger(offset),
+    })
     res.json(jobs)
   }
 
