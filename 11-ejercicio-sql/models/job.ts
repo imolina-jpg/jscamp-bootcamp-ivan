@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
 import { db } from '../db/database'
-import type { Job, JobData, JobContent, CreateJobDTO, UpdateJobDTO, JobFilters } from '../types'
+import type { CreateJobDTO, Job, JobContent, JobData, JobFilters, UpdateJobDTO } from '../types'
 
 // ================================
 // FORMA DE LAS FILAS QUE DEVUELVE SQL
@@ -91,6 +91,13 @@ export class JobModel {
 
     const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
 
+    // Paginación: clamp para no aceptar valores absurdos ni negativos.
+    // Por defecto un page razonable si el cliente no manda nada.
+    const DEFAULT_LIMIT = 20
+    const MAX_LIMIT = 100
+    const limit = Math.min(Math.max(filters?.limit ?? DEFAULT_LIMIT, 1), MAX_LIMIT)
+    const offset = Math.max(filters?.offset ?? 0, 0)
+
     // LEFT JOIN (y no JOIN a secas) para que un job sin tecnologías
     // siga apareciendo en el listado.
     // GROUP BY es lo que hace que GROUP_CONCAT agrupe por job y no lo junte todo.
@@ -103,9 +110,10 @@ export class JobModel {
          LEFT JOIN job_technologies t ON t.job_id = j.id
          ${where}
          GROUP BY j.id
-         ORDER BY j.title ASC`
+         ORDER BY j.title ASC
+         LIMIT ? OFFSET ?`
       )
-      .all(...values) as JobRow[]
+      .all(...values, limit, offset) as JobRow[]
 
     return jobs.map(toJob)
   }
